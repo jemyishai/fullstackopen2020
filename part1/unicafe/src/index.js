@@ -10,8 +10,8 @@ const App = () => {
   const allState = [{ good: good }, { neutral: neutral }, { bad: bad }];
 
   const all = good + neutral + bad;
-  const average = ((good*1) + (neutral*0) + (bad*-1))/all;
-  const pos = 100*good/all;
+  const average = (good * 1 + neutral * 0 + bad * -1) / all;
+  const pos = (100 * good) / all;
 
   const clickEvent = (event) => {
     if (event === "g") {
@@ -22,20 +22,44 @@ const App = () => {
       setBad(bad + 1);
     }
   };
-
-  return (
-    <>
-      <h1>give feedback</h1>
-      <Stats
-        sectionHeader="statistics"
-        allState={allState}
+  if (all === 0){
+    return (
+      <>
+        <h1>give feedback</h1>
+        <Button
+        handleClick={() => clickEvent("g")}
+        text={"good"}
         clickEvent={clickEvent}
-        average={average}
-        all={all}
-        pos={pos}
       />
-    </>
-  );
+      <Button
+        handleClick={() => clickEvent("n")}
+        text={"neutral"}
+        clickEvent={clickEvent}
+      />
+      <Button
+        handleClick={() => clickEvent("b")}
+        text={"bad"}
+        clickEvent={clickEvent}
+      />
+      <h1>statistics</h1>
+      <p>No feedback given</p>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <h1>give feedback</h1>
+        <Stats
+          sectionHeader="statistics"
+          allState={allState}
+          clickEvent={clickEvent}
+          average={average}
+          all={all}
+          pos={pos}
+        />
+      </>
+    );
+  }
 };
 
 const Clicks = ({ allState }) => {
@@ -44,30 +68,18 @@ const Clicks = ({ allState }) => {
     <>
       {allState.map((obj) => {
         for (const aProp in obj) {
-          return <p key={aProp + 1}>  {aProp + " " + obj[aProp]} </p>;
+          return <p key={aProp + 1}> {aProp + " " + obj[aProp]} </p>;
         }
       })}
     </>
   );
 };
 
-const All = ({allNum}) => (
-  <>
-   all {allNum}
-  </>
-)
+const All = ({ allNum }) => <>all {allNum}</>;
 
-const Average = ({average}) => (
-  <div>
-    average {average}
-  </div>
-)
+const Average = ({ average }) => <div>average {average}</div>;
 
-const Pos = ({pos}) => (
-  <div>
-  pos {pos} %
-  </div>
-)
+const Pos = ({ pos }) => <div>pos {pos} %</div>;
 
 const Stats = ({ sectionHeader, allState, clickEvent, average, all, pos }) => {
   return (
@@ -90,7 +102,7 @@ const Stats = ({ sectionHeader, allState, clickEvent, average, all, pos }) => {
       />
 
       <Clicks allState={allState} />
-      <Average average={average}  />
+      <Average average={average} />
       <All allNum={all} />
       <Pos pos={pos} />
     </div>
