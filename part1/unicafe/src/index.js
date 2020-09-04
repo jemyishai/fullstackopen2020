@@ -9,9 +9,12 @@ const App = () => {
 
   const allState = [{ good: good }, { neutral: neutral }, { bad: bad }];
 
+  const all = good + neutral + bad;
+  const average = ((good*1) + (neutral*0) + (bad*-1))/all;
+  const pos = 100*good/all;
+
   const clickEvent = (event) => {
     if (event === "g") {
-      console.log(good);
       setGood(good + 1);
     } else if (event === "n") {
       setNeutral(neutral + 1);
@@ -27,6 +30,9 @@ const App = () => {
         sectionHeader="statistics"
         allState={allState}
         clickEvent={clickEvent}
+        average={average}
+        all={all}
+        pos={pos}
       />
     </>
   );
@@ -38,14 +44,32 @@ const Clicks = ({ allState }) => {
     <>
       {allState.map((obj) => {
         for (const aProp in obj) {
-          return <p key={aProp + 1}> {aProp + " " + obj[aProp]} </p>;
+          return <p key={aProp + 1}>  {aProp + " " + obj[aProp]} </p>;
         }
       })}
     </>
   );
 };
 
-const Stats = ({ sectionHeader, allState, clickEvent }) => {
+const All = ({allNum}) => (
+  <>
+   all {allNum}
+  </>
+)
+
+const Average = ({average}) => (
+  <div>
+    average {average}
+  </div>
+)
+
+const Pos = ({pos}) => (
+  <div>
+  pos {pos} %
+  </div>
+)
+
+const Stats = ({ sectionHeader, allState, clickEvent, average, all, pos }) => {
   return (
     <div>
       <h1>{sectionHeader}</h1>
@@ -66,6 +90,9 @@ const Stats = ({ sectionHeader, allState, clickEvent }) => {
       />
 
       <Clicks allState={allState} />
+      <Average average={average}  />
+      <All allNum={all} />
+      <Pos pos={pos} />
     </div>
   );
 };
