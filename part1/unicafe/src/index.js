@@ -82,7 +82,7 @@ const Statistics = ({
             ["average", average],
             ["positive", pos, "%"],
           ].map((arr, index) => (
-            <tr key={index}>
+            <tr key={arr[0]+index}>
               <Statistic text={arr[0]} stat={arr[1]} symbol={arr[2]} />
             </tr>
           ))}
@@ -100,7 +100,7 @@ const Buttons = ({ clickEvent }) => (
       ["b", "bad"],
     ].map((arr, index) => (
       <Button
-        key={index}
+        key={arr[0]+index}
         handleClick={() => clickEvent(arr[0])}
         text={arr[1]}
       />
