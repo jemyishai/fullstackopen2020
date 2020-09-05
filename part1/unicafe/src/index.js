@@ -10,8 +10,6 @@ const App = () => {
   const average = (good * 1 + neutral * 0 + bad * -1) / all;
   const pos = (100 * good) / all;
 
-  const allState = [{ good: good }, { neutral: neutral }, { bad: bad }];
-
   const clickEvent = (event) => {
     if (event === "g") {
       setGood(good + 1);
@@ -51,9 +49,11 @@ const App = () => {
 };
 
 const Statistic = ({ text, stat, symbol }) => (
-  <p>
-    {text} {stat} {symbol}
-  </p>
+  <>
+    <td>
+      {text} {stat} {symbol}
+    </td>
+  </>
 );
 
 const Statistics = ({
@@ -71,35 +71,52 @@ const Statistics = ({
       <h1>{sectionHeader}</h1>
 
       <Buttons clickEvent={clickEvent} />
+      <br />
+      <table>
 
-      <Statistic text={"good"} stat={good} />
-      <Statistic text={"neutral"} stat={neutral} />
-      <Statistic text={"bad"} stat={bad} />
-      <Statistic text={"average"} stat={average} />
-      <Statistic text={"all"} stat={all} />
-      <Statistic text={"positive"} stat={pos} symbol={"%"} />
+        <tbody>
+          <tr>
+            <Statistic text={"good"} stat={good} />
+          </tr>
+
+          <tr>
+            <Statistic text={"neutral"} stat={neutral} />
+          </tr>
+
+          <tr>
+            <Statistic text={"bad"} stat={bad} />
+          </tr>
+
+          <tr>
+            <Statistic text={"all"} stat={all} />
+          </tr>
+
+          <tr>
+            <Statistic text={"average"} stat={average}  />
+          </tr>
+
+          <tr>
+            <Statistic text={"positive"} stat={pos} symbol={"%"} />
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
 
-{/*
-  //Need to clean up buttons, Statistics Component, Clicks component, allState storage
-
-   {/*
-      <Button handleClick={() => clickEvent("g")} text={"good"} />
-      <Button handleClick={() => clickEvent("n")} text={"neutral"} />
-      <Button handleClick={() => clickEvent("b")} text={"bad"} />
-
-       <Clicks allState={allState} />
-
-*/}
-
 const Buttons = ({ clickEvent }) => (
   <div>
-  {
-    [['g','good'],['n','neutral'],['b','bad']].map((arr)=><Button handleClick={() => clickEvent(arr[0])} text={arr[1]} />
-  )
-  }
+    {[
+      ["g", "good"],
+      ["n", "neutral"],
+      ["b", "bad"],
+    ].map((arr, index) => (
+      <Button
+        key={index}
+        handleClick={() => clickEvent(arr[0])}
+        text={arr[1]}
+      />
+    ))}
   </div>
 );
 
