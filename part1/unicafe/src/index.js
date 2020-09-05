@@ -73,31 +73,19 @@ const Statistics = ({
       <Buttons clickEvent={clickEvent} />
       <br />
       <table>
-
         <tbody>
-          <tr>
-            <Statistic text={"good"} stat={good} />
-          </tr>
-
-          <tr>
-            <Statistic text={"neutral"} stat={neutral} />
-          </tr>
-
-          <tr>
-            <Statistic text={"bad"} stat={bad} />
-          </tr>
-
-          <tr>
-            <Statistic text={"all"} stat={all} />
-          </tr>
-
-          <tr>
-            <Statistic text={"average"} stat={average}  />
-          </tr>
-
-          <tr>
-            <Statistic text={"positive"} stat={pos} symbol={"%"} />
-          </tr>
+          {[
+            ["good", good],
+            ["neutral", neutral],
+            ["bad", bad],
+            ["all", all],
+            ["average", average],
+            ["positive", pos, "%"],
+          ].map((arr, index) => (
+            <tr key={index}>
+              <Statistic text={arr[0]} stat={arr[1]} symbol={arr[2]} />
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
