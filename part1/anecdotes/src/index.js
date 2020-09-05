@@ -3,23 +3,55 @@ import ReactDOM from "react-dom";
 
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf,0));
 
   const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
   const clickEvent = () => setSelected(getRandomInt(anecdotes.length));
 
+  const clickEventVote = () => {
+    let copy = [...votes];
+    copy[selected] +=1
+    return setVotes(copy)
+  }
+
+  console.log(votes)
+
+  const max = () => (
+    Math.max(...votes)
+  )
+
+  const mostVotes = () => {
+    let indexOfMax = votes.indexOf(max());
+    return anecdotes[indexOfMax];
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
-      <Button click={clickEvent} />
+      <h1>Anecdote of the Day</h1>
+      {anecdotes[selected]} <br />
+      has {votes[selected]} votes <br />
+      <Button click={clickEvent} text={"next anecdote"}/>
+      <Button click={clickEventVote} text={"vote"}/>
+      <MostVotes max={max()} mostVotes={mostVotes()} />
     </div>
   );
 };
 
-const Button = ({ click }) => (
-  <div>
-    <button onClick={click}>next anecdote</button>
-  </div>
+
+
+const MostVotes = ({ max, mostVotes }) => (
+  <>
+    <h1>Anecdote with Most Votes</h1>
+    {mostVotes} <br />
+    has {max} votes
+  </>
+)
+
+const Button = ({ click, text }) => (
+  <>
+    <button onClick={click}>{text}</button>
+  </>
 );
 
 const anecdotes = [
