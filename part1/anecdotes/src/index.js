@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
-  const [votes, setVotes] = useState(Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf,0));
+  const [votes, setVotes] = useState(()=>anecdotes.map(()=>0));
+//when its callback to function it only runs upon initial load
 
   const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
@@ -11,34 +12,28 @@ const App = ({ anecdotes }) => {
 
   const clickEventVote = () => {
     let copy = [...votes];
-    copy[selected] +=1
-    return setVotes(copy)
-  }
+    copy[selected] += 1;
+    return setVotes(copy);
+  };
 
-  console.log(votes)
-
-  const max = () => (
-    Math.max(...votes)
-  )
+  const max = () => Math.max(...votes);
 
   const mostVotes = () => {
     let indexOfMax = votes.indexOf(max());
     return anecdotes[indexOfMax];
-  }
+  };
 
   return (
     <div>
       <h1>Anecdote of the Day</h1>
       {anecdotes[selected]} <br />
       has {votes[selected]} votes <br />
-      <Button click={clickEvent} text={"next anecdote"}/>
-      <Button click={clickEventVote} text={"vote"}/>
+      <button onClick={clickEvent}> next anecdote </button>
+      <button onClick={clickEventVote} >vote </button>
       <MostVotes max={max()} mostVotes={mostVotes()} />
     </div>
   );
 };
-
-
 
 const MostVotes = ({ max, mostVotes }) => (
   <>
@@ -46,13 +41,8 @@ const MostVotes = ({ max, mostVotes }) => (
     {mostVotes} <br />
     has {max} votes
   </>
-)
-
-const Button = ({ click, text }) => (
-  <>
-    <button onClick={click}>{text}</button>
-  </>
 );
+
 
 const anecdotes = [
   "If it hurts, do it more often",
