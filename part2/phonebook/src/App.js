@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Filter from "./Filter";
+import Form from "./Form";
+import Persons from "./Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -34,14 +37,6 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const onFilter = (event) => {
-    console.log(event.target.value);
-    //ensure special character does not break the filter
-    const regex = /[^\-a-zA-Z0-9' ]+/gi;
-    let filteredInput = event.target.value.replace(regex, "");
-    setFilter(filteredInput);
-  };
-
   const filterTest = ({ name }) => {
     console.log(name);
     const filteringNames = new RegExp(filter, "ig");
@@ -51,28 +46,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with
-        <input value={filter} onChange={onFilter} />
-      </div>
-      <form onSubmit={submitName}>
-        <div>
-          <h2>add a new</h2>
-          name: <input value={newName} onChange={onChangeName} /> <br />
-          number: <input value={newNumber} onChange={onChangeNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filter={filter} setFilter={setFilter} />
+      <Form
+        onSubmit={submitName}
+        valueName={newName}
+        valueNumber={newNumber}
+        onChangeName={onChangeName}
+        onChangeNumber={onChangeNumber}
+      />
+
       <h2>Numbers</h2>
-      <div>
-        {persons.filter(filterTest).map((person) => (
-          <div key={person.name}>
-            {person.name} {person.number}
-          </div>
-        ))}
-      </div>
+      <Persons persons={persons} filterTest={filterTest} />
     </div>
   );
 };
