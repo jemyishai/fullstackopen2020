@@ -5,7 +5,7 @@ const Persons = ({ persons, filterTest }) => {
   return (
     <div>
       {persons.filter(filterTest).map((person) => (
-        <Person person={person} />
+        <Person key={person.name+1} person={person} />
       ))}
     </div>
   );
