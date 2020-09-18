@@ -1,4 +1,5 @@
 import React from "react";
+import Weather from './Weather.js'
 
 const SingleCountry = ({country,countries}) => {
   let countryObj = countries.find(element=>element.name === country);
@@ -16,11 +17,14 @@ const SingleCountry = ({country,countries}) => {
        ))}
        <br />
        <img src={countryObj.flag} alt="country flag" width="100px" height="100px"></img>
+       <Weather country={country} countryInfo={countryObj}/>
     </div>
+
   )
   } else{
     return(<div>'patience padiwan - ain't no country with these letters'</div>)
   }
+
 }
 
 export default SingleCountry;
