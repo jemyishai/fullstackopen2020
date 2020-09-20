@@ -3,6 +3,7 @@ import Filter from "./Filter";
 import Form from "./Form";
 import Persons from "./Persons";
 import axios from 'axios';
+import services from './services/numbers.js';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -29,11 +30,12 @@ const App = () => {
   const submitName = (event) => {
     event.preventDefault();
     if (persons.every((nameCheck) => nameCheck.name !== newName)) {
-      setPersons([...persons, { name: newName, number: newNumber }]);
-      reset()
+        services.create({name: newName, number: newNumber})
+        .then(setPersons([...persons, { name: newName, number: newNumber }]));
+        reset()
     } else {
-      reset()
-      return alert(`${newName} is already added to phonebook`);
+        reset()
+        return alert(`${newName} is already added to phonebook`);
     }
   };
 
