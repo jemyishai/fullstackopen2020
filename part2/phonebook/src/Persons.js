@@ -1,11 +1,11 @@
 import React from "react";
 import Person from "./Person";
 
-const Persons = ({ persons, filterTest }) => {
+const Persons = ({ persons, filterTest, deletion }) => {
   return (
     <div>
       {persons.filter(filterTest).map((person) => (
-        <Person key={person.name+1} person={person} />
+        <Person key={person.name+1} person={person} deletion={deletion}/>
       ))}
     </div>
   );

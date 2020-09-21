@@ -2,19 +2,15 @@ import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
 import Form from "./Form";
 import Persons from "./Persons";
-import axios from 'axios';
 import services from './services/numbers.js';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(()=>{
-      console.log('effect')
-      axios
-        .get('http://localhost:3001/persons')
+        services.getAll()
         .then(response => {
-          console.log('promise fulfilled')
-          setPersons(response.data)
+          setPersons(response)
         })
   },[])
 
@@ -31,26 +27,48 @@ const App = () => {
     event.preventDefault();
     if (persons.every((nameCheck) => nameCheck.name !== newName)) {
         services.create({name: newName, number: newNumber})
-        .then(setPersons([...persons, { name: newName, number: newNumber }]));
+        .then(response => {
+         setPersons([...persons, response])
+        })
         reset()
     } else {
-        reset()
-        return alert(`${newName} is already added to phonebook`);
+        let result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
+        if (result){
+          let personObj = persons.find(person=>person.name === newName)
+          console.log(personObj)
+          services.update(personObj.id, {name: newName, number: newNumber})
+          .then(res=>{
+            console.log(res)
+            setPersons([...persons.filter(person=>person.id!== personObj.id), res])
+          })
+        }
     }
+    reset()
   };
 
+  const deletion = (name) => {
+    let result = window.confirm(`Delete ${name} ?`);
+    if (result){
+        let personObj = persons.find(person=>person.name=== name)
+        services.deletePerson(personObj.id)
+        .then(res=>{
+          console.log('res here',res);
+          setPersons(persons.filter(person=>person.id!== personObj.id))
+        }
+        )
+        alert(`${personObj.name} has been deleted`)
+    }
+  }
+
   const onChangeName = (event) => {
-    console.log(event.target.value);
     setNewName(event.target.value);
   };
 
   const onChangeNumber = (event) => {
-    console.log(event.target.value);
     setNewNumber(event.target.value);
   };
 
   const filterTest = ({ name }) => {
-    console.log(name);
     const filteringNames = new RegExp(filter, "ig");
     return filteringNames.test(name);
   };
@@ -66,9 +84,8 @@ const App = () => {
         onChangeName={onChangeName}
         onChangeNumber={onChangeNumber}
       />
-
       <h2>Numbers</h2>
-      <Persons persons={persons} filterTest={filterTest} />
+      <Persons persons={persons} filterTest={filterTest} deletion={deletion}/>
     </div>
   );
 };
