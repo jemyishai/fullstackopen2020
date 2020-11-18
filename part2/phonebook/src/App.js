@@ -44,9 +44,11 @@ const App = () => {
 
     //name and number must be filled out - front end handles this
     if (!newName && !newNumber) {
+      setNotificationType("error")
       setNotification("Name & Number must be filled out");
       setTimeout(() => {
         setNotification(null);
+        setNotificationType("notice");
       }, 5000);
     }
 
