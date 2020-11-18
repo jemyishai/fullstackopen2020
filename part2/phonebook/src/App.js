@@ -9,12 +9,15 @@ const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    services.getAll().then((response) => {
-      console.log(response);
-      setPersons(response);
-    }).catch((error) => {
-      console.error(error);
-    });
+    services
+      .getAll()
+      .then((response) => {
+        console.log(response);
+        setPersons(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const [newName, setNewName] = useState("");
@@ -26,84 +29,88 @@ const App = () => {
   const reset = () => {
     setNewName("");
     setNewNumber("");
-    services.getAll().then((response) => {
-      setPersons(response)
-    }).catch((error) => {
-      console.error(error);
-    });
+    services
+      .getAll()
+      .then((response) => {
+        setPersons(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const submitName = (event) => {
     event.preventDefault();
 
     //name and number must be filled out - front end handles this
-    if(!newName && !newNumber){
-      setNotification('Name & Number must be filled out')
-      setTimeout(()=>{
+    if (!newName && !newNumber) {
+      setNotification("Name & Number must be filled out");
+      setTimeout(() => {
         setNotification(null);
-      },5000)
+      }, 5000);
     }
 
     //run this getAll call in case multiple tabs are creating same person
     //set backend res to state of truth
 
-    if(newName && newNumber){
-    services
-      .getAll()
-      .then((res) => {
-        console.log('Going to run some checks');
-        if (res.every((nameCheck) => nameCheck.name !== newName)) {
-          services
-            .create({ name: newName, number: newNumber })
-            .then((response) => {
-              setPersons([...persons, response]);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          setNotification(`Added ${newName}`);
-          setTimeout(() => {
-            setNotification(null);
-          }, 5000);
-          reset();
-        } else {
-          let result = window.confirm(
-            `${newName} is already added to phonebook, replace the old number with a new one?`
-          );
-          if (result) {
-            let personObj = res.find((person) => person.name === newName);
-            console.log(personObj);
+    if (newName && newNumber) {
+      services
+        .getAll()
+        .then((res) => {
+          console.log("Going to run some checks");
+          if (res.every((nameCheck) => nameCheck.name !== newName)) {
             services
-              .update(personObj.id, { name: newName, number: newNumber })
-              .then((UpdateRes) => {
-                setPersons([
-                  ...persons.filter((person) => person.id !== personObj.id),
-                  UpdateRes,
-                ]);
-                setNotification(`Updated ${newName}'s number`);
-                setTimeout(() => {
-                  setNotification(null);
-                }, 5000);
+              .create({ name: newName, number: newNumber })
+              .then((response) => {
+                setPersons([...persons, response]);
               })
               .catch((error) => {
-                setNotificationType("error");
-                setNotification(
-                  `Information of ${newName} has already been removed from the server. The front-end is being updated`
-                );
-                setTimeout(() => {
-                  setNotification(null);
-                  setNotificationType("notice");
-                }, 5000);
                 console.error(error);
               });
+            setNotification(`Added ${newName}`);
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+            reset();
+          } else {
+            let result = window.confirm(
+              `${newName} is already added to phonebook, replace the old number with a new one?`
+            );
+            if (result) {
+              let personObj = res.find((person) => person.name === newName);
+              console.log(personObj);
+              services
+                .update(personObj.id, { name: newName, number: newNumber })
+                .then((UpdateRes) => {
+                  setPersons([
+                    ...persons.filter((person) => person.id !== personObj.id),
+                    UpdateRes,
+                  ]);
+                  setNotification(`Updated ${newName}'s number`);
+                  setTimeout(() => {
+                    setNotification(null);
+                  }, 5000);
+                })
+                .catch((error) => {
+                  setNotificationType("error");
+                  setNotification(
+                    `Information of ${newName} has already been removed from the server. The front-end is being updated`
+                  );
+                  setTimeout(() => {
+                    setNotification(null);
+                    setNotificationType("notice");
+                  }, 5000);
+                  console.error(error);
+                });
+            }
+            reset();
           }
-          reset();
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
-}
 
   const deletion = (name) => {
     let result = window.confirm(`Delete ${name} ?`);
@@ -119,7 +126,7 @@ const App = () => {
           console.error(error);
         });
       setNotification(`${personObj.name} has been deleted`);
-      setPersons(persons.filter((person) => person.id !== personObj.id))
+      setPersons(persons.filter((person) => person.id !== personObj.id));
       setTimeout(() => {
         setNotification(null);
       }, 5000);
