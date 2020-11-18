@@ -69,6 +69,7 @@ const App = () => {
               .catch((error) => {
                 console.error(error);
               });
+            setNotificationType('notice')
             setNotification(`Added ${newName}`);
             setTimeout(() => {
               setNotification(null);
