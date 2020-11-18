@@ -43,7 +43,7 @@ const App = () => {
     event.preventDefault();
 
     //name and number must be filled out - front end handles this
-    if (!newName && !newNumber) {
+    if (!newName || !newNumber) {
       setNotificationType("error")
       setNotification("Name & Number must be filled out");
       setTimeout(() => {
