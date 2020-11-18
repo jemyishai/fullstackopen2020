@@ -35,16 +35,22 @@ const App = () => {
 
   const submitName = (event) => {
     event.preventDefault();
+
+    //name and number must be filled out - front end handles this
+    if(!newName && !newNumber){
+      setNotification('Name & Number must be filled out')
+      setTimeout(()=>{
+        setNotification(null);
+      },5000)
+    }
+
     //run this getAll call in case multiple tabs are creating same person
     //set backend res to state of truth
+
+    if(newName && newNumber){
     services
       .getAll()
       .then((res) => {
-        // 1 idea) set temp variable then set state to variable
-        // setPersons(res).then(hello => {
-        //   console.log('setPersons completed with ', hello);
-        // });
-        //run check on res object and then update state
         console.log('Going to run some checks');
         if (res.every((nameCheck) => nameCheck.name !== newName)) {
           services
@@ -97,6 +103,7 @@ const App = () => {
         console.error(error);
       });
   };
+}
 
   const deletion = (name) => {
     let result = window.confirm(`Delete ${name} ?`);
