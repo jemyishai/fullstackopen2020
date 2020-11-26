@@ -44,7 +44,7 @@ const App = () => {
 
     //name and number must be filled out - front end handles this
     if (!newName || !newNumber) {
-      setNotificationType("error")
+      setNotificationType("error");
       setNotification("Name & Number must be filled out");
       setTimeout(() => {
         setNotification(null);
@@ -53,7 +53,6 @@ const App = () => {
     }
 
     //run this getAll call in case multiple tabs are creating same person
-    //set backend res to state of truth
 
     if (newName && newNumber) {
       services
@@ -65,15 +64,24 @@ const App = () => {
               .create({ name: newName, number: newNumber })
               .then((response) => {
                 setPersons([...persons, response]);
+                setNotificationType("notice");
+                setNotification(`Added ${newName}`);
+                setTimeout(() => {
+                  setNotification(null);
+                }, 5000);
               })
               .catch((error) => {
-                console.error(error);
+                setNotificationType("error");
+                setNotification(
+                  `Following issue: ${error.response.data.error}`
+                );
+                console.log(error.response.data.error);
+                setTimeout(() => {
+                  setNotification(null);
+                  setNotificationType("notice");
+                }, 5000);
+                console.log(error);
               });
-            setNotificationType('notice')
-            setNotification(`Added ${newName}`);
-            setTimeout(() => {
-              setNotification(null);
-            }, 5000);
             reset();
           } else {
             let result = window.confirm(
@@ -97,7 +105,7 @@ const App = () => {
                 .catch((error) => {
                   setNotificationType("error");
                   setNotification(
-                    `Information of ${newName} has already been removed from the server. The front-end is being updated`
+                    `Information of ${newName} has not been updated due to: ${error.response.data.error}`
                   );
                   setTimeout(() => {
                     setNotification(null);
