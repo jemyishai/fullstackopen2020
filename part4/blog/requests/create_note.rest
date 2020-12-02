@@ -2,8 +2,8 @@ post http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Testys got a blog",
-  "author": "snoop doggy bloggo",
-  "url": "bloggyblog@blog.com",
-  "likes": 15
+  "title": "Mr McTesty TESTSY",
+  "author": "Testy Mwww",
+  "url": "blg@blog.cwwwom",
+  "likes": 24
 }
