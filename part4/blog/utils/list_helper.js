@@ -4,10 +4,13 @@ const dummy = (blogs) => {
   return 1;
 };
 
-const totalLikes = (likes) =>
-  likes.length === 0
-    ? likes[0].likes
-    : likes.map((blog) => blog.likes).reduce((sum, item) => sum + item, 0);
+const totalLikes = (likes) => likes.reduce((sum, item) => sum + item.likes, 0);
+
+
+    // cleaner and/or more efficient way of writing this??
+
+    // _.maxBy
+//  const favouriteBlog = (blogs) => _.maxBy(blogs, (blog) => blog.likes)
 
 const favoriteBlog = (blogs) =>
   [
@@ -19,6 +22,10 @@ const favoriteBlog = (blogs) =>
   })[0];
 
 //combined mostBlogs && mostLikes
+// countBy && maxBy from Lodash
+// const blogCounts = _.countBy(blogs, 'author')
+// David's use of lodash
+
 const mostBlogs = (blogs) => {
   let dict = {};
 
@@ -26,7 +33,6 @@ const mostBlogs = (blogs) => {
     dict[blog.author] ? dict[blog.author]++ : (dict[blog.author] = 1);
   });
 
-  //ensure that if there are multiple tops one gets assigned to max
   let max = Math.max(...object.valuesIn(dict));
 
   let person = "";
