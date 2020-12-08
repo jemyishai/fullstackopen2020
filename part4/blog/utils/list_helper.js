@@ -7,10 +7,8 @@ const dummy = (blogs) => {
 const totalLikes = (likes) => likes.reduce((sum, item) => sum + item.likes, 0);
 
 
-    // cleaner and/or more efficient way of writing this??
-
     // _.maxBy
-//  const favouriteBlog = (blogs) => _.maxBy(blogs, (blog) => blog.likes)
+    //  const favouriteBlog = (blogs) => _.maxBy(blogs, (blog) => blog.likes)
 
 const favoriteBlog = (blogs) =>
   [
@@ -21,7 +19,7 @@ const favoriteBlog = (blogs) =>
     return { title: blog.title, author: blog.author, likes: blog.likes };
   })[0];
 
-//combined mostBlogs && mostLikes
+// combined mostBlogs && mostLikes
 // countBy && maxBy from Lodash
 // const blogCounts = _.countBy(blogs, 'author')
 // David's use of lodash
