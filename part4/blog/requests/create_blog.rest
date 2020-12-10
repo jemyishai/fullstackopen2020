@@ -2,8 +2,8 @@ post http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Mr McTesty TESTSY",
-  "author": "Testy Mwww",
+  "title": "Mr McTesty TESTSY is Asynced",
+  "author": "oh so asyncy",
   "url": "blg@blog.cwwwom",
-  "likes": 24
+  "likes": 44
 }

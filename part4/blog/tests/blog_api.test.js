@@ -1,44 +1,17 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const helper = require('./test_helper')
 const app = require('../app')
 const Blog = require('../models/blog')
+var _ = require('lodash');
 
-const initialBlogs = [
-  {
-    _id: "5a422a851b54a676234d17f7",
-    title: "React patterns",
-    author: "Michael Chan",
-    url: "https://reactpatterns.com/",
-    likes: 7,
-    __v: 0,
-  },
-  {
-    _id: "5a422aa71b54a676234d17f8",
-    title: "Go To Statement Considered Harmful",
-    author: "Edsger W. Dijkstra",
-    url:
-      "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 5,
-    __v: 0,
-  },
-  {
-    _id: "5a422b3a1b54a676234d17f9",
-    title: "Canonical string reduction",
-    author: "Edsger W. Dijkstra",
-    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    likes: 12,
-    __v: 0,
-  },
-]
+
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
-  blogObject = new Blog(initialBlogs[2])
-  await blogObject.save()
+  const blogObjects = helper.initialBlogs.map(blog=> new Blog(blog))
+  const promiseArray = blogObjects.map(blog=>blog.save())
+  await Promise.all(promiseArray)
 })
 const api = supertest(app)
 
@@ -53,7 +26,7 @@ test('blogs are returned as json', async () => {
 test('number of blogs is the same as initialBlogs', async () => {
   const response = await api.get('/api/blogs')
 
-  expect(response.body).toHaveLength(initialBlogs.length)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
 test('the first blog is React Patterns', async () => {
@@ -63,6 +36,97 @@ test('the first blog is React Patterns', async () => {
   expect(contents).toContain(
     'React patterns'
   )
+})
+
+test('there is an id field', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const aBlog = blogsAtStart[0]
+
+  expect(aBlog.id).toBeDefined();
+});
+
+test('a valid note can be added', async () => {
+  const newBlog = {
+    title: "New blogs are cool, I guess",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length+1)
+
+  const titles = blogsAtEnd.map(blog=>blog.title)
+  expect(titles).toContain(
+    "New blogs are cool, I guess"
+  )
+})
+
+test('if the likes property is missing from the request, it will default to the value 0', async ()=>{
+  const newBlogNoLikes = {
+    title: "New blogs with 0 likes",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogNoLikes)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length+1)
+
+    const titles = blogsAtEnd.map(blog=>blog.title)
+    expect(titles).toContain(
+      'New blogs with 0 likes'
+    )
+
+    const addedBlog = _.find(blogsAtEnd,(blog)=>blog.title === 'New blogs with 0 likes')
+    expect(addedBlog.likes).toEqual(0)
+
+})
+
+
+test('a specific blog can be viewed', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+
+  const blogToView = blogsAtStart[0]
+
+  const resultBlog = await api
+    .get(`/api/blogs/${blogToView.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+
+  expect(resultBlog.body).toEqual(processedBlogToView)
+})
+
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(
+    helper.initialBlogs.length - 1
+  )
+
+  const contents = blogsAtEnd.map(r => r.title)
+
+  expect(contents).not.toContain(blogToDelete.title)
 })
 
 
