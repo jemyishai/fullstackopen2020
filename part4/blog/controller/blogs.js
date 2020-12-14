@@ -32,21 +32,6 @@ blogsRouter.post("/", async (request, response, next) => {
   }
 });
 
-// app.put('/api/persons/:id', (req, res, next) => {
-//   // console.log(typeof req.params.id)
-//   // console.log(req.params.id)
-//   // https://github.com/blakehaswell/mongoose-unique-validator#find--updates
-//   const { name, number } = req.body
-//   Person.findByIdAndUpdate(req.params.id, { name, number }, {
-//     new: true,
-//     runValidators: true,
-//     context: 'query'
-//   })
-//     .then((updatedPeep) => {
-//       res.json(updatedPeep)
-//     })
-//     .catch((err) => next(err))
-// })
 
 blogsRouter.put("/:id", async (request, response, next) =>{
   const {likes, title, author, url} = request.body;

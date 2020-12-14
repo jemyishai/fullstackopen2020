@@ -1,9 +1,9 @@
-post http://localhost:3001/api/blogs
+put http://localhost:3001/api/blogs/5fcfd09078687558c9156bc3
 Content-Type: application/json
 
 {
-  "title": "Mr McTesty TESTSY is Asynced",
-  "author": "oh so asyncy",
-  "url": "blg@blog.cwwwom",
-  "likes": 44
+"title": "Mr McTesty TESTSY is Asynced",
+"author": "oh so asyncy",
+"url": "blg@blog.cwwwom",
+"likes": 404040404400404404040
 }
