@@ -1,9 +1,10 @@
-put http://localhost:3001/api/blogs/5fcfd09078687558c9156bc3
+post http://localhost:3001/api/blogs/
 Content-Type: application/json
 
 {
-"title": "Mr McTesty TESTSY is Asynced",
-"author": "oh so asyncy",
+"title": "California love",
+"author": "another note",
 "url": "blg@blog.cwwwom",
-"likes": 404040404400404404040
+"likes": 2,
+"userId": "5fdc129fa9d61a55d8c9454b"
 }
