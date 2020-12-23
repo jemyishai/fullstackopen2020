@@ -1,10 +1,11 @@
 post http://localhost:3001/api/blogs/
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1yLiBBbmRlcnNvbiIsImlkIjoiNWZkYzEyOWZhOWQ2MWE1NWQ4Yzk0NTRiIiwiaWF0IjoxNjA4NzMwODU3fQ.h9syINN-V2dMXb4wOQ96hpB7EOlYkTpx9KAp_uXi86Q
 
 {
-"title": "California love",
-"author": "another note",
-"url": "blg@blog.cwwwom",
-"likes": 2,
+"title": "AUTHORIZED California love",
+"author": "AUTH_ another note",
+"url": "AUTH_blg@blog.cwwwom",
+"likes": 3,
 "userId": "5fdc129fa9d61a55d8c9454b"
 }
