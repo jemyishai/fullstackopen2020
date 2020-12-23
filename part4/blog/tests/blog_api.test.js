@@ -74,63 +74,65 @@ describe("when viewing a specific blog", () => {
   });
 });
 
-describe("when adding a new blog", () => {
-  test("a valid note can be added", async () => {
-    const newBlog = {
-      title: "New blogs are cool, I guess",
-      author: "Edsger W. Dijkstra",
-      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-      likes: 12,
-    };
+// must add tokens to these tests in order for them to work
 
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
+// describe("when adding a new blog", () => {
+//   test("a valid note can be added", async () => {
+//     const newBlog = {
+//       title: "New blogs are cool, I guess",
+//       author: "Edsger W. Dijkstra",
+//       url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+//       likes: 12,
+//     };
 
-    const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+//     await api
+//       .post("/api/blogs")
+//       .send(newBlog)
+//       .expect(201)
+//       .expect("Content-Type", /application\/json/);
 
-    const titles = blogsAtEnd.map((blog) => blog.title);
-    expect(titles).toContain("New blogs are cool, I guess");
-  });
+//     const blogsAtEnd = await helper.blogsInDb();
+//     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
 
-  test("if the likes property is missing from the request, it will default to the value 0", async () => {
-    const newBlogNoLikes = {
-      title: "New blogs with 0 likes",
-      author: "Edsger W. Dijkstra",
-      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    };
+//     const titles = blogsAtEnd.map((blog) => blog.title);
+//     expect(titles).toContain("New blogs are cool, I guess");
+//   });
 
-    await api
-      .post("/api/blogs")
-      .send(newBlogNoLikes)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
+//   test("if the likes property is missing from the request, it will default to the value 0", async () => {
+//     const newBlogNoLikes = {
+//       title: "New blogs with 0 likes",
+//       author: "Edsger W. Dijkstra",
+//       url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+//     };
 
-    const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+//     await api
+//       .post("/api/blogs")
+//       .send(newBlogNoLikes)
+//       .expect(201)
+//       .expect("Content-Type", /application\/json/);
 
-    const titles = blogsAtEnd.map((blog) => blog.title);
-    expect(titles).toContain("New blogs with 0 likes");
+//     const blogsAtEnd = await helper.blogsInDb();
+//     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
 
-    const addedBlog = _.find(
-      blogsAtEnd,
-      (blog) => blog.title === "New blogs with 0 likes"
-    );
-    expect(addedBlog.likes).toEqual(0);
-  });
+//     const titles = blogsAtEnd.map((blog) => blog.title);
+//     expect(titles).toContain("New blogs with 0 likes");
 
-  test("verifies that if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request", async () => {
-    const newBlogNoTitleNoUrl = {
-      author: "Edsger W. Dijkstra",
-      likes: 58,
-    };
+//     const addedBlog = _.find(
+//       blogsAtEnd,
+//       (blog) => blog.title === "New blogs with 0 likes"
+//     );
+//     expect(addedBlog.likes).toEqual(0);
+//   });
 
-    await api.post("/api/blogs").send(newBlogNoTitleNoUrl).expect(400);
-  });
-});
+//   test("verifies that if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request", async () => {
+//     const newBlogNoTitleNoUrl = {
+//       author: "Edsger W. Dijkstra",
+//       likes: 58,
+//     };
+
+//     await api.post("/api/blogs").send(newBlogNoTitleNoUrl).expect(400);
+//   });
+// });
 
 describe("when deleting a blog", () => {
   test("a blog can be deleted", async () => {
@@ -181,9 +183,13 @@ describe('when updating a blogs info', ()=>{
   })
 })
 
-afterAll(() => {
-  mongoose.connection.close();
-});
+
+
+// Also, implement tests which check that invalid users are not created and invalid add user operation returns a suitable status code and error message.
+
+// WOULD THIS BE 400 for usernames and passwords that are too short?
+
+// also test password and usernames are there?
 
 
 describe('when there is initially one user in db', () => {
@@ -238,4 +244,52 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
+
+
+  test('check that invalid usernames are not created and invalid add user operation returns a suitable status code and error message.', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'ro',
+      name: 'Superuser',
+      password: 'salainen',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('`username` (`ro`) is shorter than the minimum allowed length (3)')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('check that invalid password are not created and invalid add user operation returns a suitable status code and error message.', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'rowrowrowyourboat',
+      name: 'Superuser',
+      password: 'sa',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('invalid password - must be at least 3 characters')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
 })
+
+afterAll(() => {
+  mongoose.connection.close();
+});

@@ -8,7 +8,7 @@ usersRouter.get("/", async (request, response) => {
     author: 1,
     url: 1,
     likes: 1,
-    id: 1
+    id: 1,
   });
   response.json(users);
 });
@@ -19,7 +19,7 @@ usersRouter.get("/:id", async (request, response) => {
     author: 1,
     url: 1,
     likes: 1,
-    id: 1
+    id: 1,
   });
   if (userFound) {
     response.json(userFound);
@@ -30,19 +30,26 @@ usersRouter.get("/:id", async (request, response) => {
 
 usersRouter.post("/", async (request, response) => {
   const body = request.body;
+  console.log(body.password)
+  if (body.password.length < 3) {
+    console.log('HERERERER')
+    response
+      .status(400)
+      .send({ error: "invalid password - must be at least 3 characters" });
+  } else {
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(body.password, saltRounds);
+    const user = new User({
+      username: body.username,
+      name: body.name,
+      passwordHash,
+    });
 
-  const user = new User({
-    username: body.username,
-    name: body.name,
-    passwordHash,
-  });
+    const savedUser = await user.save();
 
-  const savedUser = await user.save();
-
-  response.json(savedUser);
+    response.json(savedUser);
+  }
 });
 
 module.exports = usersRouter;
