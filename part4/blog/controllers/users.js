@@ -30,9 +30,7 @@ usersRouter.get("/:id", async (request, response) => {
 
 usersRouter.post("/", async (request, response) => {
   const body = request.body;
-  console.log(body.password)
   if (body.password.length < 3) {
-    console.log('HERERERER')
     response
       .status(400)
       .send({ error: "invalid password - must be at least 3 characters" });
