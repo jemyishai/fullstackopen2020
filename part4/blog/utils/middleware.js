@@ -8,9 +8,19 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+//should this have a call to next() ?
+//should it be last?
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
+
+const getTokenFrom = (request, response, next) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  next()
+}
 
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message);
@@ -31,4 +41,5 @@ module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  getTokenFrom
 }
