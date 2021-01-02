@@ -2,7 +2,7 @@ post http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-"username": "",
-"name": "AUTH_TEST_Testy Getting Real",
-"password": "jjjjj"
+"username": "DELETY",
+"name": "DELETE TEST NEW USER",
+"password": "delete"
 }
