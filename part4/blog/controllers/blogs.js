@@ -22,8 +22,6 @@ blogsRouter.get("/:id", async (req, res, next) => {
 });
 
 blogsRouter.post("/", async (request, response, next) => {
-  console.log("post hit dawg")
-  // response.send("You are getting smarter")
   const body = request.body;
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!request.token || !decodedToken.id) {
@@ -68,17 +66,29 @@ blogsRouter.patch("/:id", async (request, response, next) => {
 
 blogsRouter.delete("/:id", async (request, response, next) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if (request.token || !decodedToken.id) {
+  if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid" });
   }
 
   const user = await User.findById(decodedToken.id);
   const blog = await Blog.findById(request.params.id);
-  console.log("check:", user, blog);
+  // console.log("check:", user, blog);
+  // console.log('user._id.toString()', user._id.toString())
+  // console.log(blog.user.toString() === user._id.toString())
+  // console.log('blog._id.toString()',blog.user.toString())
 
-  if (blog.user.id.toString() === user.id.toString()) {
+  if (blog.user.toString() === user._id.toString()) {
     console.log("made it here");
+
+     // can I delete right off the blog obj??
     await Blog.findByIdAndRemove(request.params.id);
+
+    //remove from user as well
+    //do I need to to do this to user if the populate nonsense is setup?
+    user.blogs = user.blogs.filter(blog=>blog.id.toString() !== request.params.id)
+    await user.save()
+  } else{
+    return response.status(401).json({ error: "you didn't author this blog" });
   }
 
   response.status(204).end();
