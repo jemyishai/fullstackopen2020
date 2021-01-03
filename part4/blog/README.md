@@ -1,4 +1,7 @@
-A simple project for review. Everything for this particular project
+This is a blog from part 4 of fullstackopen.
+https://fullstackopen.com/en/part4/token_authentication#exercises-4-15-4-22
+
+Beginning notes - probably best not to use create-react-app for backend
 
 1) ```npx create-react-app blog```
   -Feel free to delete create-react-app scaffolding & node_modules if the package.json looks good

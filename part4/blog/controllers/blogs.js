@@ -2,7 +2,6 @@ const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-// const blog = require("../models/blog");
 
 blogsRouter.get("/", async (request, response, next) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
@@ -72,23 +71,16 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 
   const user = await User.findById(decodedToken.id);
   const blog = await Blog.findById(request.params.id);
-  // console.log("check:", user, blog);
-  // console.log('user._id.toString()', user._id.toString())
-  // console.log(blog.user.toString() === user._id.toString())
-  // console.log('blog._id.toString()',blog.user.toString())
 
   if (blog.user.toString() === user._id.toString()) {
-    console.log("made it here");
-
-     // can I delete right off the blog obj??
     await Blog.findByIdAndRemove(request.params.id);
 
-    //remove from user as well
-    //do I need to to do this to user if the populate nonsense is setup?
-    user.blogs = user.blogs.filter(blog=>blog.id.toString() !== request.params.id)
-    await user.save()
-  } else{
-    return response.status(401).json({ error: "you didn't author this blog" });
+    user.blogs = user.blogs.filter(
+      (blog) => blog.id.toString() !== request.params.id
+    );
+    await user.save();
+  } else {
+    return response.status(401).json({ error: "you didn't post this blog" });
   }
 
   response.status(204).end();

@@ -7,6 +7,10 @@ var _ = require("lodash");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
+// check out how beautifully workmd did it
+// https://gist.github.com/workmad3/240574d70a860acf8d0056f5a0c135bc
+
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
@@ -180,9 +184,6 @@ describe("when there is initially one user in db", () => {
   });
 });
 
-//working on tokens here
-// must add tokens to these tests in order for them to work
-
 describe("when adding a new blog", () => {
   test("a valid note can be added", async () => {
     const newUser = {
@@ -253,9 +254,7 @@ describe("when adding a new blog", () => {
         .expect(200)
         .expect("Content-Type", /application\/json/);
 
-      // console.log('token',loginForToken.body.token)
       const tempToken = loginForToken.body.token;
-
 
       const newBlogNoLikes = {
         title: "New blogs with 0 likes",
@@ -306,7 +305,6 @@ describe("when adding a new blog", () => {
         .expect(200)
         .expect("Content-Type", /application\/json/);
 
-      // console.log('token',loginForToken.body.token)
       const tempToken = loginForToken.body.token;
 
 
@@ -319,7 +317,6 @@ describe("when adding a new blog", () => {
   });
 });
 
-//deleting a blog will also need a token
 
 describe("when deleting a blog", () => {
   test("a blog can be deleted", async () => {
@@ -345,9 +342,7 @@ describe("when deleting a blog", () => {
     .expect(200)
     .expect("Content-Type", /application\/json/);
 
-  // console.log('token',loginForToken.body.token)
   const tempToken = loginForToken.body.token;
-
 
   const newBlogNoLikes = {
     title: "Going to be deleted very very soon",
