@@ -9,10 +9,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationType, setNotificationType] = useState(null)
   const [newBlog, setNewBlog ] = useState({title:'',author:'',url:''});
-
-
 
 
   useEffect(() => {
@@ -44,10 +43,18 @@ const App = () => {
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       setUser(user);
       resetUser()
-    } catch (exception) {
-      setErrorMessage("Wrong credentials");
+      setNotificationType('notice')
+      setNotificationMessage("Successful login");
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotificationMessage(null);
+        setNotificationType(null)
+      }, 5000);
+    } catch (exception) {
+      setNotificationType('error')
+      setNotificationMessage("Wrong credentials");
+      setTimeout(() => {
+        setNotificationType(null)
+        setNotificationMessage(null);
       }, 5000);
       resetUser()
     }
@@ -82,6 +89,12 @@ const App = () => {
   );
 
   const logOut = () => {
+    setNotificationType('notice')
+    setNotificationMessage('Successful Logout');
+    setTimeout(() => {
+      setNotificationType(null)
+      setNotificationMessage(null);
+    }, 5000);
     window.localStorage.removeItem("loggedBlogAppUser");
     setUser(null)
   }
@@ -96,11 +109,20 @@ const App = () => {
       blogService.setToken(user.token)
       const blog = await blogService.create(newBlog);
       resetBlog()
-      blogService.getAll().then((blogs) => setBlogs(blogs));
-    } catch (exception) {
-      setErrorMessage("Blog not successfully added");
+      const newblogs = await blogService.getAll()
+      setBlogs(newblogs)
+      setNotificationType('notice')
+      setNotificationMessage(`Successfully added ${blog.title} by ${blog.author}`);
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotificationType(null)
+        setNotificationMessage(null);
+      }, 5000);
+    } catch (exception) {
+      setNotificationType('error')
+      setNotificationMessage("Blog not successfully added");
+      setTimeout(() => {
+        setNotificationType(null)
+        setNotificationMessage(null);
       }, 5000);
       resetBlog()
     }
@@ -114,7 +136,7 @@ const App = () => {
           <input
             type="text"
             //this is currently commented out due to fb react error - A component is changing a controlled input of type text to be uncontrolled. Input elements should not switch from controlled to uncontrolled (or vice versa).
-            value={newBlog.title}
+            // value={newBlog.title}
             name="newTitle"
             onChange={({ target }) => setNewBlog({...newBlog, title :target.value})}
           />
@@ -155,7 +177,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification notification={errorMessage} />
+      <Notification notification={notificationMessage} notificationType={notificationType}/>
       {user === null ? userLogin() : blogDisplays()}
     </div>
   );
