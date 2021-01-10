@@ -128,15 +128,14 @@ const App = () => {
     }
   };
 
-  const CreateNewBlog = () => (
+  const CreateNewBlog = ({newBlog}) => (
     <div>
     <form onSubmit={handleSubmit}>
         <div>
           title
           <input
             type="text"
-            //this is currently commented out due to fb react error - A component is changing a controlled input of type text to be uncontrolled. Input elements should not switch from controlled to uncontrolled (or vice versa).
-            // value={newBlog.title}
+            value={newBlog.title}
             name="newTitle"
             onChange={({ target }) => setNewBlog({...newBlog, title :target.value})}
           />
@@ -145,7 +144,7 @@ const App = () => {
           author
           <input
             type="text"
-            // value={newBlog.author}
+            value={newBlog.author}
             name="newAuthor"
             onChange={({ target }) => setNewBlog({...newBlog, author: target.value})}
           />
@@ -154,7 +153,7 @@ const App = () => {
           url
           <input
             type="url"
-            // value={newBlog.url}
+            value={newBlog.url}
             name="newUrl"
             onChange={({ target }) => setNewBlog({...newBlog,url:target.value})   }
           />
@@ -168,16 +167,19 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       {user.name} logged in <button type="submit" onClick={logOut}>logout</button> <br/><br/>
-       {CreateNewBlog()}
+      <CreateNewBlog newBlog={newBlog} />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
     </div>
   );
 
+  //just use a component in ternary
+
   return (
     <div>
       <Notification notification={notificationMessage} notificationType={notificationType}/>
+
       {user === null ? userLogin() : blogDisplays()}
     </div>
   );
