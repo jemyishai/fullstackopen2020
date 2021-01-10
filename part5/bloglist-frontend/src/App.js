@@ -10,6 +10,10 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [newBlog, setNewBlog ] = useState({title:'',author:'',url:''});
+
+
+
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -23,7 +27,7 @@ const App = () => {
     }
   }, []);
 
-  const reset = () => {
+  const resetUser = () => {
     setUsername("");
     setPassword("");
   };
@@ -36,17 +40,19 @@ const App = () => {
         username,
         password,
       });
+      blogService.setToken(user.token)
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       setUser(user);
-      reset()
+      resetUser()
     } catch (exception) {
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
-      reset()
+      resetUser()
     }
   };
+
 
   const userLogin = () => (
     <div>
@@ -80,10 +86,67 @@ const App = () => {
     setUser(null)
   }
 
+  const resetBlog = () => setNewBlog({})
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("submitting", newBlog);
+    try {
+      blogService.setToken(user.token)
+      const blog = await blogService.create(newBlog);
+      resetBlog()
+      blogService.getAll().then((blogs) => setBlogs(blogs));
+    } catch (exception) {
+      setErrorMessage("Blog not successfully added");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+      resetBlog()
+    }
+  };
+
+  const CreateNewBlog = () => (
+    <div>
+    <form onSubmit={handleSubmit}>
+        <div>
+          title
+          <input
+            type="text"
+            //this is currently commented out due to fb react error - A component is changing a controlled input of type text to be uncontrolled. Input elements should not switch from controlled to uncontrolled (or vice versa).
+            value={newBlog.title}
+            name="newTitle"
+            onChange={({ target }) => setNewBlog({...newBlog, title :target.value})}
+          />
+        </div>
+        <div>
+          author
+          <input
+            type="text"
+            // value={newBlog.author}
+            name="newAuthor"
+            onChange={({ target }) => setNewBlog({...newBlog, author: target.value})}
+          />
+        </div>
+        <div>
+          url
+          <input
+            type="url"
+            // value={newBlog.url}
+            name="newUrl"
+            onChange={({ target }) => setNewBlog({...newBlog,url:target.value})   }
+          />
+        </div>
+        <button type="submit">submit</button>
+      </form>
+      </div>
+  )
+
   const blogDisplays = () => (
     <div>
       <h2>blogs</h2>
       {user.name} logged in <button type="submit" onClick={logOut}>logout</button> <br/><br/>
+       {CreateNewBlog()}
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
