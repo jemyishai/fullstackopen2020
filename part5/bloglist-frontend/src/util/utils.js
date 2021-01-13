@@ -15,4 +15,6 @@ const resetUserFields = (user,pass) => {
 
 const resetBlog = (resetBlog) => resetBlog({})
 
-export { notify, resetUserFields, resetBlog };
+const filterBlogsForUser = (blogs=[], user={}) => blogs.filter((blog)=>blog.user.name === user.name)
+
+export { notify, resetUserFields, resetBlog, filterBlogsForUser };

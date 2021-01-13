@@ -4,7 +4,12 @@ import BlogDisplays from "./components/BlogDisplays";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./Notification.js";
-import { notify, resetUserFields, resetBlog } from "./util/utils.js";
+import {
+  notify,
+  resetUserFields,
+  resetBlog,
+  filterBlogsForUser,
+} from "./util/utils.js";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,19 +20,27 @@ const App = () => {
   const [notificationType, setNotificationType] = useState(null);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
 
-  useEffect(() => {
-    async function initialFetch() {
-      let blogs = await blogService.getAll();
-      setBlogs(blogs);
-    }
-    initialFetch();
-  }, []);
+  // useEffect(() => {
+  //   async function initialFetch() {
+  //     let initialBlogs = await blogService.getAll();
+  //     setBlogs(initialBlogs);
+  //   }
+  //   initialFetch();
+  // }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    async function blogsFetch(whois) {
+      let blogsToBeFiltered = await blogService.getAll();
+      setBlogs(filterBlogsForUser(blogsToBeFiltered, whois));
+    }
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      const storedUser = JSON.parse(loggedUserJSON);
+      setUser(storedUser);
+      blogService.setToken(storedUser.token);
+      blogsFetch(storedUser);
+    } else{
+      blogsFetch({});
     }
   }, []);
 
@@ -48,6 +61,9 @@ const App = () => {
         "notice",
         "Successful login"
       );
+      let blogsToBeFiltered = await blogService.getAll();
+      setBlogs(filterBlogsForUser(blogsToBeFiltered, user));
+      // setBlogs(filterBlogsForUser(blogs, user));
     } catch (exception) {
       notify(
         setNotificationType,
@@ -78,7 +94,9 @@ const App = () => {
       const blog = await blogService.create(newBlog);
       resetBlog(setNewBlog);
       const newblogs = await blogService.getAll();
-      setBlogs(newblogs);
+
+      setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
+
       notify(
         setNotificationType,
         setNotificationMessage,
