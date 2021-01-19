@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import UserLogin from "./components/UserLogin";
 import BlogDisplays from "./components/BlogDisplays";
+//had the log-in component here
+import Notification from "./components/Notification.js";
+
+
 import blogService from "./services/blogs";
-import loginService from "./services/login";
-import Notification from "./Notification.js";
+
+
 import {
   notify,
   resetUserFields,
@@ -20,14 +24,6 @@ const App = () => {
   const [notificationType, setNotificationType] = useState(null);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
 
-  // useEffect(() => {
-  //   async function initialFetch() {
-  //     let initialBlogs = await blogService.getAll();
-  //     setBlogs(initialBlogs);
-  //   }
-  //   initialFetch();
-  // }, []);
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     async function blogsFetch(whois) {
@@ -39,52 +35,13 @@ const App = () => {
       setUser(storedUser);
       blogService.setToken(storedUser.token);
       blogsFetch(storedUser);
-    } else{
+    } else {
       blogsFetch({});
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      setUser(user);
-      resetUserFields(setUsername, setPassword);
-      notify(
-        setNotificationType,
-        setNotificationMessage,
-        "notice",
-        "Successful login"
-      );
-      let blogsToBeFiltered = await blogService.getAll();
-      setBlogs(filterBlogsForUser(blogsToBeFiltered, user));
-      // setBlogs(filterBlogsForUser(blogs, user));
-    } catch (exception) {
-      notify(
-        setNotificationType,
-        setNotificationMessage,
-        "error",
-        "Wrong Credentials"
-      );
-      resetUserFields(setUsername, setPassword);
-    }
-  };
 
-  const logOut = () => {
-    notify(
-      setNotificationType,
-      setNotificationMessage,
-      "notice",
-      "Successful Logout"
-    );
-    window.localStorage.removeItem("loggedBlogAppUser");
-    setUser(null);
-  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,16 +83,22 @@ const App = () => {
           password={password}
           setPassword={setPassword}
           setUsername={setUsername}
-          handleLogin={handleLogin}
+          setBlogs={setBlogs}
+          setUser={setUser}
+          setNotificationMessage={setNotificationMessage}
+          setNotificationType={setNotificationType}
         />
       ) : (
         <BlogDisplays
           user={user}
-          logOut={logOut}
+          //logout used to be here - instead I'm refactoring it right into BlogDisplay components
           blogs={blogs}
           newBlog={newBlog}
           setNewBlog={setNewBlog}
           handleSubmit={handleSubmit}
+          setNotificationType={setNotificationType}
+          setNotificationMessage={setNotificationMessage}
+          setUser={setUser}
         />
       )}
     </div>

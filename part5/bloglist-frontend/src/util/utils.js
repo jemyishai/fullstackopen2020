@@ -17,4 +17,15 @@ const resetBlog = (resetBlog) => resetBlog({})
 
 const filterBlogsForUser = (blogs=[], user={}) => blogs.filter((blog)=>blog.user.name === user.name)
 
-export { notify, resetUserFields, resetBlog, filterBlogsForUser };
+const logOut = (setNotificationType,setNotificationMessage,setUser) => {
+  notify(
+    setNotificationType,
+    setNotificationMessage,
+    "notice",
+    "Successful Logout"
+  );
+  window.localStorage.removeItem("loggedBlogAppUser");
+  setUser(null);
+  };
+
+export { notify, resetUserFields, resetBlog, filterBlogsForUser, logOut };
