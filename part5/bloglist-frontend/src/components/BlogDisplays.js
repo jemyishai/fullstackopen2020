@@ -1,6 +1,7 @@
 import React from "react";
 import Blog from "./Blog";
 import CreateNewBlog from "./CreateNewBlog";
+import Toggle from "./Toggle";
 import blogService from "../services/blogs";
 
 import { logOut, notify, resetBlog } from "../util/utils.js";
@@ -14,6 +15,8 @@ const BlogDisplays = ({
   setNotificationMessage,
   setUser,
   setBlogs,
+  visible,
+  setVisible
 }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +26,8 @@ const BlogDisplays = ({
       const blog = await blogService.create(newBlog);
       resetBlog(setNewBlog);
       const newblogs = await blogService.getAll();
+      // the next two lines should be in the Toggle component
+      setVisible(!visible)
       setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
       notify(
         setNotificationType,
@@ -46,9 +51,9 @@ const BlogDisplays = ({
       <h2>blogs</h2>
       {user.name} logged in{" "}
       {/*
-      useEffect notes
-custom hook !!
-      review the difference between passing an onClick handler with the function called, like so funciton(), or the the functions being called in an anonymous function, like so function ()=>function() */}
+      -useEffect notes
+      -custom hook??
+      -review the difference between passing an onClick handler with the function called, like so funciton(), or the the functions being called in an anonymous function, like so function ()=>function() */}
       <button
         type="submit"
         onClick={() =>
@@ -59,11 +64,13 @@ custom hook !!
       </button>{" "}
       <br />
       <br />
-      <CreateNewBlog
-        newBlog={newBlog}
-        setNewBlog={setNewBlog}
-        handleSubmit={handleSubmit}
-      />
+      <Toggle buttonLabel={"New Blog"} visible={visible} setVisible={setVisible}>
+        <CreateNewBlog
+          newBlog={newBlog}
+          setNewBlog={setNewBlog}
+          handleSubmit={handleSubmit}
+        />
+      </Toggle>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

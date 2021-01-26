@@ -12,7 +12,7 @@ const UserLogin = ({
   setBlogs,
   setNotificationMessage,
   setNotificationType,
-  setLoginVisible,
+  // setLoginVisible,
 }) => {
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -69,14 +69,14 @@ const UserLogin = ({
         <button type="submit">login</button>
       </form>
 
-      <button
+      {/* <button
         onClick={() => {
           setLoginVisible(false);
           window.localStorage.setItem("currentInvisibility", false);
         }}
       >
         cancel
-      </button>
+      </button> */}
     </div>
   );
 };

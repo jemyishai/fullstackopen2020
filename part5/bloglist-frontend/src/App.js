@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import UserLogin from "./components/UserLogin";
+
+import blogService from "./services/blogs";
+
 import BlogDisplays from "./components/BlogDisplays";
 import Notification from "./components/Notification.js";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
+import Toggle from "./components/Toggle.js";
+import UserLogin from "./components/UserLogin";
+
 import { filterBlogsForUser } from "./util/utils.js";
 
 const App = () => {
@@ -14,29 +17,31 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationType, setNotificationType] = useState(null);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
-  const [loginVisible, setLoginVisible] = useState(false);
-  const hideWhenVisible = { display: loginVisible ? "none" : "" };
-  const showWhenVisible = { display: loginVisible ? "" : "none" };
+  const [visible, setVisible] = useState(false)
 
-  useEffect(() => {
-    async function allBlogFetch() {
-      let allBlogs = await blogService.getAll();
-      setBlogs(allBlogs);
-    }
-   if ( !loginVisible ){
-    allBlogFetch()
-   }
-  }, [loginVisible]);
+  // const [loginVisible, setLoginVisible] = useState(false);
+  // const hideWhenVisible = { display: loginVisible ? "none" : "" };
+  // const showWhenVisible = { display: loginVisible ? "" : "none" };
+
+  // useEffect(() => {
+  //   async function allBlogFetch() {
+  //     let allBlogs = await blogService.getAll();
+  //     setBlogs(allBlogs);
+  //   }
+  //  if ( !loginVisible ){
+  //   allBlogFetch()
+  //  }
+  // }, [loginVisible]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
-    const visibilityState =  window.localStorage.getItem("currentInvisibility");
+    // const visibilityState =  window.localStorage.getItem("currentInvisibility");
     async function blogsFetch(whois) {
       let blogsToBeFiltered = await blogService.getAll();
       setBlogs(filterBlogsForUser(blogsToBeFiltered, whois));
     }
     if (loggedUserJSON) {
-      setLoginVisible(JSON.parse(visibilityState))
+      // setLoginVisible(JSON.parse(visibilityState))
       const storedUser = JSON.parse(loggedUserJSON);
       setUser(storedUser);
       blogService.setToken(storedUser.token);
@@ -57,7 +62,7 @@ const App = () => {
         notificationType={notificationType}
       />
       <div>
-        <div style={hideWhenVisible}>
+        {/* <div style={hideWhenVisible}>
           <button onClick={() => {
             setLoginVisible(true);
             window.localStorage.setItem("currentInvisibility",true);
@@ -65,9 +70,11 @@ const App = () => {
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
+
         </div>
-        <div style={showWhenVisible}>
-          {user === null ? (
+        {/* <div style={showWhenVisible}> */}
+        {user === null ? (
+          <Toggle buttonLabel={"login"} visible={visible} setVisible={setVisible}>
             <UserLogin
               username={username}
               password={password}
@@ -77,22 +84,24 @@ const App = () => {
               setUser={setUser}
               setNotificationMessage={setNotificationMessage}
               setNotificationType={setNotificationType}
-              setLoginVisible={setLoginVisible}
+              // setLoginVisible={setLoginVisible}
             />
-          ) : (
-            <BlogDisplays
-              user={user}
-              blogs={blogs}
-              newBlog={newBlog}
-              setNewBlog={setNewBlog}
-              setBlogs={setBlogs}
-              setNotificationType={setNotificationType}
-              setNotificationMessage={setNotificationMessage}
-              setUser={setUser}
-            />
-          )}
-        </div>
+          </Toggle>
+        ) : (
+          <BlogDisplays
+            user={user}
+            blogs={blogs}
+            newBlog={newBlog}
+            setNewBlog={setNewBlog}
+            setBlogs={setBlogs}
+            setNotificationType={setNotificationType}
+            setNotificationMessage={setNotificationMessage}
+            setUser={setUser}
+            visible={visible} setVisible={setVisible}
+          />
+        )}
       </div>
+      {/* </div> */}
     </>
   );
 };
