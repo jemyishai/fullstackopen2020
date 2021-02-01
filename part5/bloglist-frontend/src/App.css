@@ -2,9 +2,28 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 1em;
+  padding: 1em;
+  background-color: #80e0fa;
+}
+
+h2 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+button{
+  text-align: center;
+  color:rgb(36, 35, 35);
+  background-color:rgb(250, 234, 212);
+  border-radius: 8px;
+  padding: 2px 2em 2px 2em;
+  margin-bottom: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+
 }
 
 @media (prefers-reduced-motion: no-preference) {

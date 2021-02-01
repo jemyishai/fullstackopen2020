@@ -15,8 +15,6 @@ const BlogDisplays = ({
   setNotificationMessage,
   setUser,
   setBlogs,
-  visible,
-  setVisible
 }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,8 +24,7 @@ const BlogDisplays = ({
       const blog = await blogService.create(newBlog);
       resetBlog(setNewBlog);
       const newblogs = await blogService.getAll();
-      // the next two lines should be in the Toggle component
-      setVisible(!visible)
+
       setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
       notify(
         setNotificationType,
@@ -64,7 +61,7 @@ const BlogDisplays = ({
       </button>{" "}
       <br />
       <br />
-      <Toggle buttonLabel={"New Blog"} visible={visible} setVisible={setVisible}>
+      <Toggle buttonLabel={"New Blog"} >
         <CreateNewBlog
           newBlog={newBlog}
           setNewBlog={setNewBlog}

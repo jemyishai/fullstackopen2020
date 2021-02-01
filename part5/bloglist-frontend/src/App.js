@@ -4,7 +4,6 @@ import blogService from "./services/blogs";
 
 import BlogDisplays from "./components/BlogDisplays";
 import Notification from "./components/Notification.js";
-import Toggle from "./components/Toggle.js";
 import UserLogin from "./components/UserLogin";
 
 import { filterBlogsForUser } from "./util/utils.js";
@@ -17,7 +16,6 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationType, setNotificationType] = useState(null);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
-  const [visible, setVisible] = useState(false)
 
   // const [loginVisible, setLoginVisible] = useState(false);
   // const hideWhenVisible = { display: loginVisible ? "none" : "" };
@@ -55,6 +53,7 @@ const App = () => {
     // }
   }, []);
 
+
   return (
     <>
       <Notification
@@ -74,19 +73,16 @@ const App = () => {
         </div>
         {/* <div style={showWhenVisible}> */}
         {user === null ? (
-          <Toggle buttonLabel={"login"} visible={visible} setVisible={setVisible}>
-            <UserLogin
-              username={username}
-              password={password}
-              setPassword={setPassword}
-              setUsername={setUsername}
-              setBlogs={setBlogs}
-              setUser={setUser}
-              setNotificationMessage={setNotificationMessage}
-              setNotificationType={setNotificationType}
-              // setLoginVisible={setLoginVisible}
-            />
-          </Toggle>
+          <UserLogin
+            username={username}
+            password={password}
+            setPassword={setPassword}
+            setUsername={setUsername}
+            setBlogs={setBlogs}
+            setUser={setUser}
+            setNotificationMessage={setNotificationMessage}
+            setNotificationType={setNotificationType}
+          />
         ) : (
           <BlogDisplays
             user={user}
@@ -97,7 +93,6 @@ const App = () => {
             setNotificationType={setNotificationType}
             setNotificationMessage={setNotificationMessage}
             setUser={setUser}
-            visible={visible} setVisible={setVisible}
           />
         )}
       </div>
