@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import BlogDetails from "./BlogDetails";
 
 const blogStyle = {
@@ -12,11 +13,12 @@ const blogStyle = {
 const Blog = ({ blog }) => {
   const [blogDetailsVisibility, setBlogDetailsVisibility] = useState(false);
   const hideOrViewDetails = { display: blogDetailsVisibility ? "" : "none" };
-  const buttonLabel = blogDetailsVisibility ? 'hide': 'view';
+  const buttonLabel = blogDetailsVisibility ? "hide" : "view";
 
   const toggleVisibility = () => {
     setBlogDetailsVisibility(!blogDetailsVisibility);
   };
+
   return (
     <div style={blogStyle}>
       {blog.title} <em>authored by</em> {blog.author}{" "}
