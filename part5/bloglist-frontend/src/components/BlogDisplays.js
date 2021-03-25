@@ -45,7 +45,7 @@ const BlogDisplays = ({
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       {user.name} logged in{" "}
       {/*
       -useEffect notes

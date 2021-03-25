@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import services from "../services/blogs.js";
+import RemoveBlog from './RemoveBlog';
 
 const BlogDetails = ({ blog }) => {
   let [currentLikes, setCurrentLikes] = useState(blog.likes);
@@ -27,6 +28,7 @@ const BlogDetails = ({ blog }) => {
       <br />
       <em>posted by user:</em> {blog.user.username}
       <br />
+      <RemoveBlog blog={blog} />
     </>
   );
 };
