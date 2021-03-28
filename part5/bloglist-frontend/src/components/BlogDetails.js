@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import services from "../services/blogs.js";
-import RemoveBlog from './RemoveBlog';
+import React, { useEffect, useState } from 'react'
+import services from '../services/blogs.js'
+import RemoveBlog from './RemoveBlog'
 
-const BlogDetails = ({ blog }) => {
-  let [currentLikes, setCurrentLikes] = useState(blog.likes);
+const BlogDetails = ({ blog, blogs, setBlogs }) => {
+  let [currentLikes, setCurrentLikes] = useState(blog.likes)
 
   useEffect(() => {
-    let newBlog = { ...blog, user: blog.user.id, likes: currentLikes };
-    delete newBlog.id;
-    let asyncPatch = async () => await services.update(blog.id, newBlog);
+    let newBlog = { ...blog, user: blog.user.id, likes: currentLikes }
+    delete newBlog.id
+    let asyncPatch = async () => await services.update(blog.id, newBlog)
     try {
-      asyncPatch();
+      asyncPatch()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  }, [currentLikes, blog]);
+  }, [currentLikes, blog])
 
   return (
     <>
       {blog.url} <br />
-      Likes: {currentLikes}{" "}
+      Likes: {currentLikes}{' '}
       <button onClick={() => setCurrentLikes(currentLikes + 1)}>like</button>
       <br />
       {blog.title}
@@ -28,9 +28,9 @@ const BlogDetails = ({ blog }) => {
       <br />
       <em>posted by user:</em> {blog.user.username}
       <br />
-      <RemoveBlog blog={blog} />
+      <RemoveBlog blog={blog} blogs={blogs} setBlogs={setBlogs} />
     </>
-  );
-};
+  )
+}
 
-export default BlogDetails;
+export default BlogDetails

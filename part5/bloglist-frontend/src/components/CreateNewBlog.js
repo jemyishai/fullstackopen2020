@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-const CreateNewBlog = ({newBlog, setNewBlog, handleSubmit}) => (
+const CreateNewBlog = ({ newBlog, setNewBlog, handleSubmit }) => (
   <div>
-  <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div>
         title
         <input
           type="text"
           value={newBlog.title || ''}
           name="title"
-          onChange={({ target }) => setNewBlog({...newBlog, title :target.value})}
+          onChange={({ target }) => setNewBlog({ ...newBlog, title :target.value })}
         />
       </div>
       <div>
@@ -18,7 +18,7 @@ const CreateNewBlog = ({newBlog, setNewBlog, handleSubmit}) => (
           type="text"
           value={newBlog.author || ''}
           name="author"
-          onChange={({ target }) => setNewBlog({...newBlog, author: target.value})}
+          onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}
         />
       </div>
       <div>
@@ -27,12 +27,12 @@ const CreateNewBlog = ({newBlog, setNewBlog, handleSubmit}) => (
           type="url"
           value={newBlog.url || ''}
           name="newUrl"
-          onChange={({ target }) => setNewBlog({...newBlog,url:target.value})   }
+          onChange={({ target }) => setNewBlog({ ...newBlog,url:target.value })   }
         />
       </div>
       <button type="submit">submit</button>
     </form>
-    </div>
+  </div>
 )
 
 export default CreateNewBlog

@@ -1,7 +1,7 @@
-import React from "react";
-import loginService from "../services/login";
-import blogService from "../services/blogs";
-import { notify, resetUserFields, filterBlogsForUser } from "../util/utils";
+import React from 'react'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
+import { notify, resetUserFields, filterBlogsForUser } from '../util/utils'
 
 const UserLogin = ({
   username,
@@ -15,34 +15,35 @@ const UserLogin = ({
   // setLoginVisible,
 }) => {
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await loginService.login({
         username,
         password,
-      });
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      setUser(user);
-      resetUserFields(setUsername, setPassword);
+      })
+      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      setUser(user)
+      resetUserFields(setUsername, setPassword)
       notify(
         setNotificationType,
         setNotificationMessage,
-        "notice",
-        "Successful login"
-      );
-      let blogsToBeFiltered = await blogService.getAll();
-      setBlogs(filterBlogsForUser(blogsToBeFiltered, user));
+        'notice',
+        'Successful login'
+      )
+      let blogsToBeFiltered = await blogService.getAll()
+      // setBlogs(filterBlogsForUser(blogsToBeFiltered, user));
+      setBlogs(blogsToBeFiltered)
     } catch (exception) {
       notify(
         setNotificationType,
         setNotificationMessage,
-        "error",
-        "Wrong Credentials"
-      );
-      resetUserFields(setUsername, setPassword);
+        'error',
+        'Wrong Credentials'
+      )
+      resetUserFields(setUsername, setPassword)
     }
-  };
+  }
 
   return (
     <div>
@@ -78,7 +79,7 @@ const UserLogin = ({
         cancel
       </button> */}
     </div>
-  );
-};
+  )
+}
 
-export default UserLogin;
+export default UserLogin

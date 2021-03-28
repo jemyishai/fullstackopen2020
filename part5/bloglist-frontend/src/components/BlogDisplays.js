@@ -1,10 +1,10 @@
-import React from "react";
-import Blog from "./Blog";
-import CreateNewBlog from "./CreateNewBlog";
-import Toggle from "./Toggle";
-import blogService from "../services/blogs";
+import React from 'react'
+import Blog from './Blog'
+import CreateNewBlog from './CreateNewBlog'
+import Toggle from './Toggle'
+import blogService from '../services/blogs'
 
-import { logOut, notify, resetBlog } from "../util/utils.js";
+import { logOut, notify, resetBlog } from '../util/utils.js'
 
 const BlogDisplays = ({
   user,
@@ -17,36 +17,37 @@ const BlogDisplays = ({
   setBlogs,
 }) => {
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("submitting", newBlog);
+    event.preventDefault()
+    console.log('submitting', newBlog)
     try {
-      blogService.setToken(user.token);
-      const blog = await blogService.create(newBlog);
-      resetBlog(setNewBlog);
-      const newblogs = await blogService.getAll();
-
-      setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
+      blogService.setToken(user.token)
+      const blog = await blogService.create(newBlog)
+      resetBlog(setNewBlog)
+      const newblogs = await blogService.getAll()
+      // was previously only showing blogs if user posted them. changed that at 5.10 for deletion button
+      // setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
+      setBlogs(newblogs)
       notify(
         setNotificationType,
         setNotificationMessage,
-        "notice",
+        'notice',
         `Successfully added ${blog.title} by ${blog.author}`
-      );
+      )
     } catch (exception) {
       notify(
         setNotificationType,
         setNotificationMessage,
-        "error",
-        "Blog not successfully added"
-      );
-      resetBlog(setNewBlog);
+        'error',
+        'Blog not successfully added'
+      )
+      resetBlog(setNewBlog)
     }
-  };
+  }
 
   return (
     <div>
       <h2>Blogs</h2>
-      {user.name} logged in{" "}
+      {user.name} logged in{' '}
       {/*
       -useEffect notes
       -custom hook??
@@ -58,21 +59,21 @@ const BlogDisplays = ({
         }
       >
         logout
-      </button>{" "}
+      </button>{' '}
       <br />
       <br />
-      <Toggle buttonLabel={"New Blog"} >
+      <Toggle buttonLabel={'New Blog'} >
         <CreateNewBlog
           newBlog={newBlog}
           setNewBlog={setNewBlog}
           handleSubmit={handleSubmit}
         />
       </Toggle>
-      {blogs.sort((a,b)=>b.likes-a.likes).map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+      {blogs.sort((a,b) => b.likes-a.likes).map((blog) => (
+        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default BlogDisplays;
+export default BlogDisplays
