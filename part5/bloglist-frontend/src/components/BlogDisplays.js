@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import Blog from './Blog'
 import CreateNewBlog from './CreateNewBlog'
 import Toggle from './Toggle'
@@ -16,9 +16,12 @@ const BlogDisplays = ({
   setUser,
   setBlogs,
 }) => {
+  const blogFormRef = useRef();
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('submitting', newBlog)
+    blogFormRef.current.toggleVisibility()
     try {
       blogService.setToken(user.token)
       const blog = await blogService.create(newBlog)
@@ -49,8 +52,6 @@ const BlogDisplays = ({
       <h2>Blogs</h2>
       {user.name} logged in{' '}
       {/*
-      -useEffect notes
-      -custom hook??
       -review the difference between passing an onClick handler with the function called, like so funciton(), or the the functions being called in an anonymous function, like so function ()=>function() */}
       <button
         type="submit"
@@ -62,7 +63,7 @@ const BlogDisplays = ({
       </button>{' '}
       <br />
       <br />
-      <Toggle buttonLabel={'New Blog'} >
+      <Toggle buttonLabel={'New Blog'} ref={blogFormRef}>
         <CreateNewBlog
           newBlog={newBlog}
           setNewBlog={setNewBlog}
