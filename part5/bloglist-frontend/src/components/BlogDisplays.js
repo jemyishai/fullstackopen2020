@@ -4,7 +4,7 @@ import CreateNewBlog from './CreateNewBlog'
 import Toggle from './Toggle'
 import blogService from '../services/blogs'
 
-import { logOut, notify, resetBlog } from '../util/utils.js'
+import { logOut, notify, resetBlog, likeAdd } from '../util/utils.js'
 
 const BlogDisplays = ({
   user,
@@ -71,7 +71,7 @@ const BlogDisplays = ({
         />
       </Toggle>
       {blogs.sort((a,b) => b.likes-a.likes).map((blog) => (
-        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
+        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} likeAdd={likeAdd}/>
       ))}
     </div>
   )

@@ -28,4 +28,6 @@ const logOut = (setNotificationType,setNotificationMessage,setUser) => {
   setUser(null)
 }
 
-export { notify, resetUserFields, resetBlog, filterBlogsForUser, logOut }
+const likeAdd = (func,val) => func(val+1)
+
+export { notify, resetUserFields, resetBlog, filterBlogsForUser, logOut, likeAdd }

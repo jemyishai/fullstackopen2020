@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import services from '../services/blogs.js'
 import RemoveBlog from './RemoveBlog'
 
-const BlogDetails = ({ blog, blogs, setBlogs }) => {
+const BlogDetails = ({ blog, blogs, setBlogs, likeAdd }) => {
   let [currentLikes, setCurrentLikes] = useState(blog.likes)
 
   useEffect(() => {
@@ -16,11 +16,13 @@ const BlogDetails = ({ blog, blogs, setBlogs }) => {
     }
   }, [currentLikes, blog])
 
+
+
   return (
     <>
       {blog.url} <br />
       Likes: {currentLikes}{' '}
-      <button onClick={() => setCurrentLikes(currentLikes + 1)}>like</button>
+      <button onClick={() => likeAdd(setCurrentLikes, currentLikes)}>like</button>
       <br />
       {blog.title}
       <br />

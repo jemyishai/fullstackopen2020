@@ -29,8 +29,10 @@ const RemoveBlog = ({ blog, blogs, setBlogs }) => {
     }
   }
 
-  return blog.user.username ===
-    JSON.parse(localStorage.getItem('loggedBlogAppUser')).username ? (
+  const usernameFromLocalStorage = JSON.parse(localStorage.getItem('loggedBlogAppUser')).username;
+  const usernameTesting = !usernameFromLocalStorage ? null : usernameFromLocalStorage
+
+  return blog.user.username === usernameTesting ? (
       <button onClick={() => deleteABlog(blog)}>remove blog</button>
     ) : null
 }
