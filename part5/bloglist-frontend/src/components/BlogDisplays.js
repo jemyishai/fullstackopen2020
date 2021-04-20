@@ -1,10 +1,11 @@
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 import Blog from './Blog'
 import CreateNewBlog from './CreateNewBlog'
 import Toggle from './Toggle'
-import blogService from '../services/blogs'
 
-import { logOut, notify, resetBlog, likeAdd } from '../util/utils.js'
+import { logOut,  likeAdd } from '../util/utils.js'
+import { notify, resetBlog } from '../util/utils.js'
+import blogService from '../services/blogs'
 
 const BlogDisplays = ({
   user,
@@ -16,11 +17,12 @@ const BlogDisplays = ({
   setUser,
   setBlogs,
 }) => {
-  const blogFormRef = useRef();
+  const blogFormRef = useRef()
 
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = async ( event ) => {
     event.preventDefault()
-    console.log('submitting', newBlog)
+    // console.log("submitting", newBlog);
     blogFormRef.current.toggleVisibility()
     try {
       blogService.setToken(user.token)
@@ -30,12 +32,14 @@ const BlogDisplays = ({
       // was previously only showing blogs if user posted them. changed that at 5.10 for deletion button
       // setBlogs(newblogs.filter((blog) => blog.user.name === user.name));
       setBlogs(newblogs)
+      resetBlog(setNewBlog)
       notify(
         setNotificationType,
         setNotificationMessage,
         'notice',
         `Successfully added ${blog.title} by ${blog.author}`
       )
+      // return blog
     } catch (exception) {
       notify(
         setNotificationType,
@@ -45,6 +49,7 @@ const BlogDisplays = ({
       )
       resetBlog(setNewBlog)
     }
+
   }
 
   return (
@@ -67,6 +72,9 @@ const BlogDisplays = ({
         <CreateNewBlog
           newBlog={newBlog}
           setNewBlog={setNewBlog}
+          blogs={blogs}
+          setUser={setUser}
+          setBlogs={setBlogs}
           handleSubmit={handleSubmit}
         />
       </Toggle>

@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import services from '../services/blogs.js'
-import RemoveBlog from './RemoveBlog'
+import React from 'react'
 
-const BlogDetails = ({ blog, blogs, setBlogs, likeAdd }) => {
-  let [currentLikes, setCurrentLikes] = useState(blog.likes)
-
-  useEffect(() => {
-    let newBlog = { ...blog, user: blog.user.id, likes: currentLikes }
-    delete newBlog.id
-    let asyncPatch = async () => await services.update(blog.id, newBlog)
-    try {
-      asyncPatch()
-    } catch (error) {
-      console.log(error)
-    }
-  }, [currentLikes, blog])
-
-
+const BlogDetails = ({ blog, currentLikes, likeAdd, removeBlog }) => {
 
   return (
     <>
       {blog.url} <br />
       Likes: {currentLikes}{' '}
-      <button onClick={() => likeAdd(setCurrentLikes, currentLikes)}>like</button>
+      <button
+        onClick={() => likeAdd()} >
+        like
+      </button>
       <br />
       {blog.title}
       <br />
@@ -30,7 +17,7 @@ const BlogDetails = ({ blog, blogs, setBlogs, likeAdd }) => {
       <br />
       <em>posted by user:</em> {blog.user.username}
       <br />
-      <RemoveBlog blog={blog} blogs={blogs} setBlogs={setBlogs} />
+      {removeBlog()}
     </>
   )
 }
