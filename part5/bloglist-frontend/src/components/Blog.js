@@ -11,14 +11,10 @@ const blogStyle = {
   marginBottom: 5,
 }
 
-
 const Blog = ({ blog, blogs, setBlogs }) => {
   const [blogDetailsVisibility, setBlogDetailsVisibility] = useState(false)
-  const buttonLabel = blogDetailsVisibility ? 'hide' : 'view'
-
   let [currentLikes, setCurrentLikes] = useState(blog.likes)
-
-  let allBlogCall = async () => await services.getAll()
+  const buttonLabel = blogDetailsVisibility ? 'hide' : 'view'
 
   let likeAdd = () => {
     let copy = currentLikes
@@ -27,8 +23,11 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     let asyncPatch = async () => await services.update(blog.id, newBlog)
     try {
       asyncPatch()
-      // rewrite this mess async/await & .then is a disaster
-      allBlogCall().then((res) => setBlogs(res))
+
+      services.getAll()
+        .then((res) => setBlogs(res))
+        .catch(err => console.log(err))
+
       setCurrentLikes(currentLikes + 1)
     } catch (error) {
       console.log(error)
