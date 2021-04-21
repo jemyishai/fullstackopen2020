@@ -1,5 +1,8 @@
 .env
 
+#VS Code Requests
+.rest
+
 # dependencies
 /node_modules
 /.pnp

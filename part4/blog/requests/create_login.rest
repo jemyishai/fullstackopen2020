@@ -1,7 +1,17 @@
 post http://localhost:3001/api/login
 Content-Type: application/json
 
+# {
+# "username": "DELETY",
+# "password": "delete"
+# }
+
+# {
+# "username": "another_DELETY",
+# "password": "new"
+# }
+
 {
-"username": "DELETY",
-"password": "delete"
+"username": "another_DELETY",
+"password": "new"
 }
