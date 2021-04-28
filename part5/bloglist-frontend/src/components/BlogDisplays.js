@@ -60,6 +60,7 @@ const BlogDisplays = ({
       -review the difference between passing an onClick handler with the function called, like so funciton(), or the the functions being called in an anonymous function, like so function ()=>function() */}
       <button
         type="submit"
+        id="logout-button"
         onClick={() =>
           logOut(setNotificationType, setNotificationMessage, setUser)
         }

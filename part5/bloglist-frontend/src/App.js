@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-
 import blogService from './services/blogs'
-
 import BlogDisplays from './components/BlogDisplays'
 import Notification from './components/Notification.js'
 import UserLogin from './components/UserLogin'
 
-import { filterBlogsForUser } from './util/utils.js'
+// import { filterBlogsForUser } from './util/utils.js'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -20,7 +18,7 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     // const visibilityState =  window.localStorage.getItem("currentInvisibility");
-    async function blogsFetch(whois) {
+    async function blogsFetch() {
       let blogsToBeFiltered = await blogService.getAll()
       // setBlogs(filterBlogsForUser(blogsToBeFiltered, whois));
       setBlogs(blogsToBeFiltered)

@@ -1,7 +1,7 @@
 import React from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import { notify, resetUserFields, filterBlogsForUser } from '../util/utils'
+import { notify, resetUserFields } from '../util/utils'
 
 const UserLogin = ({
   username,
@@ -55,6 +55,7 @@ const UserLogin = ({
             type="text"
             value={username}
             name="Username"
+            id="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
@@ -64,10 +65,11 @@ const UserLogin = ({
             type="current-password"
             value={password}
             name="Password"
+            id="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button type="submit" id="login-button">login</button>
       </form>
 
       {/* <button
