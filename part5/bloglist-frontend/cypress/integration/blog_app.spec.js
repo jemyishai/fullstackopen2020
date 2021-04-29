@@ -19,17 +19,6 @@ describe('Blog app', function () {
 })
 
 describe('Login', function () {
-//   it('succeeds with correct credentials', function () {
-//     cy.request('POST', 'http://localhost:3003/api/login', {
-//       username: 'test_user',
-//       password: 'test',
-//     }).then((response) => {
-//       localStorage.setItem('loggedNoteappUser', JSON.stringify(response.body))
-//       // cy.visit('http://localhost:3000')
-//       // cy.get('#logout-button').click()
-//     })
-//   })
-
   it('succeeds with the correct credentials', function(){
     cy.get('#username').type('test_user')
     cy.get('#password').type('test')
@@ -48,5 +37,35 @@ describe('Login', function () {
     cy.get('html').should('not.contain', 'test logged in')
   })
 })
-describe('Like a blog', function(){
+
+describe('When Logged in', function(){
+  beforeEach(function(){
+    cy.request('POST', 'http://localhost:3001/api/login', {
+      username: 'test_user',
+      password: 'test',
+    }).then((response) => {
+      localStorage.setItem('loggedBlogAppUser', JSON.stringify(response.body))
+      cy.visit('http://localhost:3000')
+    })
+  })
+  it('A blog can be created', function(){
+    cy.contains('test logged in')
+    //Toggle Issue - access button via ID
+    cy.contains('New Blog').click()
+    cy.get('#title').type('Enzyme Test')
+    cy.get('#author').type('Cypress')
+    cy.get('#url').type('https://www.e2e4eva.com')
+    cy.contains('submit').click()
+    cy.get('.notice')
+      .should('contain', 'added')
+      .and('have.css', 'color', 'rgb(0, 128, 0)')
+    cy.contains('Enzyme Test')
+  })
+  it('User can like a blog', function (){
+    cy.contains('view').click()
+    cy.contains('like').click().click()
+    cy.contains('Likes: 2')
+  })
 })
+
+//nested tests
