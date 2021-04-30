@@ -10,6 +10,15 @@ describe('Blog app', function () {
         password: 'test',
       },
     })
+    cy.request({
+      url: 'http://localhost:3001/api/users',
+      method: 'POST',
+      body: {
+        username: 'test_user_1',
+        name: 'test_1',
+        password: 'test_1',
+      },
+    })
     cy.visit('http://localhost:3000')
   })
 
@@ -65,7 +74,38 @@ describe('When Logged in', function(){
     cy.contains('view').click()
     cy.contains('like').click().click()
     cy.contains('Likes: 2')
+    cy.contains('logout').click()
+  })
+  it('user who created a blog can delete it', function(){
+    cy.contains('view').click()
+    cy.contains('remove blog').click()
+    // following assertion isn't needed
+    cy.on('window:confirm',() => true)
+    cy.contains('test logged in')
+    cy.get('html').should('contain', 'test logged in').should('not.contain', 'Enzyme Test')
+    //where is this mysterious Cypress
+  })
+  it('Other users cannot delete the blog', function(){
+    //turn this into a function
+    cy.contains('New Blog').click()
+    cy.get('#title').type('Enzyme Test_2')
+    cy.get('#author').type('Cypress_2')
+    cy.get('#url').type('https://www.e2e4eva_2.com')
+    cy.contains('submit').click()
+    cy.contains('logout').click()
+    // turn this into a function
+    cy.request('POST', 'http://localhost:3001/api/login', {
+      username: 'test_user_1',
+      password: 'test_1',
+    }).then((response) => {
+      localStorage.setItem('loggedBlogAppUser', JSON.stringify(response.body))
+      cy.visit('http://localhost:3000')
+    })
+    cy.contains('view').click()
+    cy.get('#user-info')
+      .should('contain', 'test_user')
+      .should('not.contain', 'remove blog')
   })
 })
 
-//nested tests
+// nested tests

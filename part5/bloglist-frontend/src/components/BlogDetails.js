@@ -15,7 +15,7 @@ const BlogDetails = ({ blog, currentLikes, likeAdd, removeBlog }) => {
       <br />
       {blog.url}
       <br />
-      <em>posted by user:</em> {blog.user.username}
+      <div id="user-info"><em >posted by user:</em> {blog.user.username}</div>
       <br />
       {removeBlog()}
     </>
