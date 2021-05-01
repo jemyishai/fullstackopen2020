@@ -83,7 +83,7 @@ describe('When Logged in', function(){
     cy.on('window:confirm',() => true)
     cy.contains('test logged in')
     cy.get('html').should('contain', 'test logged in').should('not.contain', 'Enzyme Test')
-    //where is this mysterious Cypress
+    //Cypress exists in the Cypress script lol
   })
   it('Other users cannot delete the blog', function(){
     //turn this into a function
@@ -105,6 +105,26 @@ describe('When Logged in', function(){
     cy.get('#user-info')
       .should('contain', 'test_user')
       .should('not.contain', 'remove blog')
+  })
+  it('Orders blogs by number of likes', function(){
+    //increase likes of existing blog to 2
+    cy.contains('view').click()
+    cy.contains('like').click().click()
+    //adds new blog & clicks like 4 times
+    cy.contains('New Blog').click()
+    cy.get('#title').type('Enzyme Test')
+    cy.get('#author').type('Cypress')
+    cy.get('#url').type('https://www.e2e4eva.com')
+    cy.contains('submit').click()
+    cy.contains('view').click()
+    //need to add better classes names and potentially use a map here
+    cy.get(':nth-child(7) > :nth-child(5)').click().click().click().click()
+    cy.get(':nth-child(2) > :nth-child(1) > :nth-child(6)')
+      .should('contain', 'Likes: 4')
+      .should('contain', 'https://www.e2e4eva.com')
+    cy.get(':nth-child(2) > :nth-child(1) > :nth-child(7)')
+      .should('contain', 'Likes: 2')
+      .should('contain', 'Enzyme Test_2')
   })
 })
 

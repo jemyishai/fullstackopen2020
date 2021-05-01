@@ -74,11 +74,11 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog-details">
       {blog.title} <em>authored by</em> {blog.author}{' '}
       <button onClick={toggleVisibility}>{buttonLabel}</button>
       <br />
-      {  blogDetailsVisibility ? <BlogDetails blog={blog} blogs={blogs} setBlogs={setBlogs} likeAdd={likeAdd} currentLikes={currentLikes} removeBlog={removeBlog}/> : null }
+      {  blogDetailsVisibility ? <BlogDetails blog={blog} blogs={blogs} setBlogs={setBlogs} likeAdd={likeAdd} currentLikes={currentLikes} removeBlog={removeBlog} /> : null }
     </div>
   )
 }
