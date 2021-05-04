@@ -5,7 +5,7 @@ const Notification = ({ notification, notificationType }) => {
     return null
   }
 
-  return <div className={notificationType}>{notification}</div>
+  return <div className={notificationType} data-cy="notification">{notification}</div>
 }
 
 export default Notification

@@ -19,7 +19,6 @@ const BlogDisplays = ({
 }) => {
   const blogFormRef = useRef()
 
-
   const handleSubmit = async ( event ) => {
     event.preventDefault()
     // console.log("submitting", newBlog);
@@ -49,25 +48,25 @@ const BlogDisplays = ({
       )
       resetBlog(setNewBlog)
     }
-
   }
 
   return (
     <div>
       <h2>Blogs</h2>
-      {user.name} logged in{' '}
-      {/*
+      <div data-cy="user">{user.username} logged in{' '}
+        {/*
       -review the difference between passing an onClick handler with the function called, like so funciton(), or the the functions being called in an anonymous function, like so function ()=>function() */}
-      <button
-        type="submit"
-        id="logout-button"
-        onClick={() =>
-          logOut(setNotificationType, setNotificationMessage, setUser)
-        }
-      >
+        <button
+          type="submit"
+          id="logout-button"
+          data-cy="logout"
+          onClick={() =>
+            logOut(setNotificationType, setNotificationMessage, setUser)
+          }
+        >
         logout
-      </button>{' '}
-      <br />
+        </button>{' '}
+      </div>
       <br />
       <Toggle buttonLabel={'New Blog'} ref={blogFormRef}>
         <CreateNewBlog

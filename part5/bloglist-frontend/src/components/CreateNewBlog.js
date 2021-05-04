@@ -12,6 +12,7 @@ const CreateNewBlog = ({ newBlog, setNewBlog, handleSubmit }) => {
             value={newBlog.title || ''}
             name="title"
             id="title"
+            data-cy="title"
             onChange={({ target }) =>
               setNewBlog({ ...newBlog, title: target.value })
             }
@@ -24,6 +25,7 @@ const CreateNewBlog = ({ newBlog, setNewBlog, handleSubmit }) => {
             value={newBlog.author || ''}
             name="author"
             id="author"
+            data-cy="author"
             onChange={({ target }) =>
               setNewBlog({ ...newBlog, author: target.value })
             }
@@ -36,12 +38,13 @@ const CreateNewBlog = ({ newBlog, setNewBlog, handleSubmit }) => {
             value={newBlog.url || ''}
             name="newUrl"
             id="url"
+            data-cy="url"
             onChange={({ target }) =>
               setNewBlog({ ...newBlog, url: target.value })
             }
           />
         </div>
-        <button type="submit">submit</button>
+        <button type="submit" data-cy="new-blog-submit">submit</button>
       </form>
     </div>
   )

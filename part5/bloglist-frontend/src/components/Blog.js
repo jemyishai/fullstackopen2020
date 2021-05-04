@@ -69,14 +69,14 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     const usernameTesting = !usernameFromLocalStorage ? null : usernameFromLocalStorage
 
     return blog.user.username === usernameTesting ? (
-      <button onClick={() => deleteABlog(blog)}>remove blog</button>
+      <button data-cy="remove-blog" onClick={() => deleteABlog(blog)}>remove blog</button>
     ) : null
   }
 
   return (
     <div style={blogStyle} className="blog-details">
       {blog.title} <em>authored by</em> {blog.author}{' '}
-      <button onClick={toggleVisibility}>{buttonLabel}</button>
+      <button onClick={toggleVisibility} data-cy={blog.title + '-' + blog.author + '-' + 'toggle'}>{buttonLabel}</button>
       <br />
       {  blogDetailsVisibility ? <BlogDetails blog={blog} blogs={blogs} setBlogs={setBlogs} likeAdd={likeAdd} currentLikes={currentLikes} removeBlog={removeBlog} /> : null }
     </div>
