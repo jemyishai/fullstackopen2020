@@ -5,6 +5,7 @@ import { render, waitFor, fireEvent, getByTestId } from "@testing-library/react"
 import deepFreeze from "deep-freeze";
 import reducer, { initialState, anecdotesAtStart } from "./anecdoteReducer";
 import App from "../App";
+import store from '../store'
 
 describe("reducer", () => {
   test("should return a proper initial state when called with undefined state", () => {
@@ -54,7 +55,7 @@ describe("redux state and action are used for voting", () => {
 
   const renderComponent = () =>
     render(
-      <Provider store={createStore(reducer)}>
+      <Provider store={store}>
         <App />
       </Provider>
     );
