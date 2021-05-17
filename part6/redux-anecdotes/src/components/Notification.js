@@ -12,22 +12,22 @@ const Notification = () => {
     borderWidth: 1,
   };
 
-  // console.log({ notification }, { anecdotes });
-
   const noticeAndClear = () => {
     setTimeout(() => dispatch(clearNoticeAction()), 5000);
   };
 
-  let message= notification.type === 'upvote' ? 'You voted up ' + anecdotes.find((saying) => saying.id === notification.id).content : 'You added ' + notification.content
+  let message =
+    notification.type === "upvote"
+      ? "You voted up " +
+        anecdotes.find((saying) => saying.id === notification.id).content
+      : "You added " + notification.content;
 
-  return (
+  return notification.notice ? (
     <div style={style}>
-      {notification && notification.notice
-        ? message
-        : null}
+      {notification && notification.notice ? message : null}
       {!notification.notice ? null : noticeAndClear()}
     </div>
-  );
+  ) : null;
 };
 
 export default Notification;
