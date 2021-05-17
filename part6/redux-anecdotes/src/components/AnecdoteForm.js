@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addAnecdote } from "../reducers/anecdoteReducer";
+import { newSayingAction } from "../reducers/notificationReducer";
 
 const AnecdoteForm = () => {
   const anecdotes = useSelector((state) => state);
@@ -12,6 +13,7 @@ const AnecdoteForm = () => {
     event.target.say.value = ''
     console.log(saying);
     dispatch(addAnecdote(saying));
+    dispatch(newSayingAction(saying))
   }
 console.log(anecdotes)
 

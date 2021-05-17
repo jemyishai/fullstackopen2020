@@ -1,17 +1,33 @@
-
-import React from 'react'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearNoticeAction } from "../reducers/notificationReducer";
 
 const Notification = () => {
+  const notification = useSelector((state) => state.notice);
+  const anecdotes = useSelector((state) => state.anecdote);
+  const dispatch = useDispatch();
   const style = {
-    border: 'solid',
+    border: "solid",
     padding: 10,
-    borderWidth: 1
-  }
+    borderWidth: 1,
+  };
+
+  // console.log({ notification }, { anecdotes });
+
+  const noticeAndClear = () => {
+    setTimeout(() => dispatch(clearNoticeAction()), 5000);
+  };
+
+  let message= notification.type === 'upvote' ? 'You voted up ' + anecdotes.find((saying) => saying.id === notification.id).content : 'You added ' + notification.content
+
   return (
     <div style={style}>
-      render here notification...
+      {notification && notification.notice
+        ? message
+        : null}
+      {!notification.notice ? null : noticeAndClear()}
     </div>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;
