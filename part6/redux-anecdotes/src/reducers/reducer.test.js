@@ -6,6 +6,7 @@ import deepFreeze from "deep-freeze";
 import reducer, { initialState, anecdotesAtStart } from "./anecdoteReducer";
 import App from "../App";
 import store from '../store'
+import anecdoteServices from './services/anecdotes.js'
 
 describe("reducer", () => {
   test("should return a proper initial state when called with undefined state", () => {
