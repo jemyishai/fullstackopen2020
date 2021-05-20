@@ -11,7 +11,6 @@ const AnecdoteForm = () => {
     event.preventDefault();
     const saying = event.target.say.value;
     event.target.say.value = "";
-    console.log(saying);
     dispatch(addAnecdote(saying));
     dispatch(newSayingAction(saying));
   };

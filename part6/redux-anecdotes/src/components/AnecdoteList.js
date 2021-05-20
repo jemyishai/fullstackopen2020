@@ -10,9 +10,11 @@ const AnecdoteList = () => {
   const filter_text = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
+
+
   const vote = (id) => {
-    console.log("vote", id);
-    dispatch(addOneAction(id));
+    const anecdoteToBeUpdated = anecdotes.find(obj => obj.id === id)
+    dispatch(addOneAction(id, anecdoteToBeUpdated));
     dispatch(setNoticeAction(id));
   };
 

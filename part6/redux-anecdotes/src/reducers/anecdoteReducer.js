@@ -13,20 +13,26 @@ export const asObject = (anecdote) => {
 
 // export const initialState = anecdotesAtStart.map(asObject)
 
-export const addOneAction = (id) => {
-  return {
-    type: "ADD_ONE",
-    id,
+//is this OK - do I need to use the return object?
+export const addOneAction = (id, anecdoteToBeUpdated) => {
+  return async (dispatch) => {
+    let tempVotes = anecdoteToBeUpdated.votes;
+    const updatedObject = { ...anecdoteToBeUpdated, votes: tempVotes + 1 };
+    const update = await anecdoteService.update(id, updatedObject);
+    dispatch({
+      type: "ADD_ONE",
+      id,
+    });
   };
 };
 
-export const addAnecdote = (content) => {
-  return async dispatch => {
-    const data = await anecdoteService.create(content)
+export const addAnecdote = (saying) => {
+  return async (dispatch) => {
+    const data = await anecdoteService.create(saying);
     dispatch({
       type: "ADD_SAYING",
       data,
-    })
+    });
   };
 };
 
