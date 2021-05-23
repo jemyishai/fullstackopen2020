@@ -1,34 +1,29 @@
-export const setNoticeAction = (id) => {
-  return {
-    type: "VOTED_UP",
-    id,
-  };
-};
-
+// should I call this entire action or just dispatch what I have? Delete it?
 export const clearNoticeAction = () => {
   return {
-    type: "CLEAR"
+    type: "CLEAR",
   };
 };
 
-
-export const newSayingAction = (saying) => {
-  return {
-    type: "ADDED_NEW",
-    saying
+// restructure this? use await somehow?
+export const setNotification = (anecObj, type, sec) => {
+  return async (dispatch) => {
+    dispatch({
+      type: "NOTICE",
+      anecObj: { ...anecObj, type },
+    });
+    setTimeout(() => dispatch({ type: "CLEAR" }), sec * 1000);
   };
 };
 
-
-const notificationReducer = (state = {type: null, content:null, id: null, notice: false}, action) => {
+const notificationReducer = (state = { notice: false }, action) => {
   switch (action.type) {
-    case "VOTED_UP":
-      return {type:'upvote', id: action.id,notice:true, content: null}
+    case "NOTICE":
+      return { ...action.anecObj, notice: true };
     case "CLEAR":
-      return {type:'clear', id: null,notice:false,content: null}
-    case "ADDED_NEW":
-      return {type:'added_new', id: action.id,notice:true,content: action.saying}
-    default: return state
+      return { type: "clear", id: null, notice: false, content: null };
+    default:
+      return state;
   }
 };
 

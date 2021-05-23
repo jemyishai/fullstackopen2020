@@ -8,7 +8,7 @@ const getAll = async () => {
 }
 
 const create = async (content) => {
-  //altered to backend in future or action creator
+  //altered to backend in future or action creator?
   const newSayingObj = { votes: 0, content}
   const response = await axios.post(baseUrl, newSayingObj)
   return response.data

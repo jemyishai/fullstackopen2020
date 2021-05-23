@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addOneAction } from "../reducers/anecdoteReducer";
-import { setNoticeAction } from "../reducers/notificationReducer";
+import { setNotification } from "../reducers/notificationReducer";
 import Notification from "../components/Notification";
 import Filter from "../components/Filter";
 
@@ -11,11 +11,11 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
 
-
   const vote = (id) => {
     const anecdoteToBeUpdated = anecdotes.find(obj => obj.id === id)
-    dispatch(addOneAction(id, anecdoteToBeUpdated));
-    dispatch(setNoticeAction(id));
+    console.log(anecdoteToBeUpdated)
+    dispatch(addOneAction(id, anecdoteToBeUpdated))
+    dispatch(setNotification({content: anecdoteToBeUpdated.content},"upvote", 5));
   };
 
   const regex = new RegExp(filter_text, "i", "g");

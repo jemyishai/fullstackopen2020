@@ -11,8 +11,6 @@ export const asObject = (anecdote) => {
   };
 };
 
-// export const initialState = anecdotesAtStart.map(asObject)
-
 //is this OK - do I need to use the return object?
 export const addOneAction = (id, anecdoteToBeUpdated) => {
   return async (dispatch) => {
@@ -47,8 +45,6 @@ export const initializeAnecdotes = () => {
 };
 
 const anecdoteReducer = (state = [], action) => {
-  // console.log('state now: ', state)
-  // console.log({action})
   switch (action.type) {
     case "ADD_ONE":
       return [
