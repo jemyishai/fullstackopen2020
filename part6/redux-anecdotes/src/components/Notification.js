@@ -11,15 +11,10 @@ const Notification = () => {
   };
 
   // move this to action creator
-  let message =
-    notification.type === "upvote"
-      ? "You voted up " +
-        notification.content
-      : "You added " + notification.content;
 
   return notification.notice ? (
     <div style={style}>
-      {notification.notice ? message : null}
+      {notification.notice ? notification.message : null}
     </div>
   ) : null;
 };

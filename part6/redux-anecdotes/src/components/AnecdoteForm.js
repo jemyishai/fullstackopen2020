@@ -4,7 +4,7 @@ import { addAnecdote } from "../reducers/anecdoteReducer";
 import { setNotification} from "../reducers/notificationReducer";
 
 const AnecdoteForm = () => {
-  const anecdotes = useSelector((state) => state);
+  // const anecdotes = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const dispatchAnecdote = (event) => {
