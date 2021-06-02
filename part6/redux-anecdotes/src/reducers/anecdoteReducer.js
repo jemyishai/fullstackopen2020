@@ -1,7 +1,6 @@
 import anecdoteService from "../services/anecdotes";
 
 
-//is this OK - do I need to use the return object?
 export const addOneAction = (id, anecdoteToBeUpdated) => {
   return async (dispatch) => {
     let tempVotes = anecdoteToBeUpdated.votes;

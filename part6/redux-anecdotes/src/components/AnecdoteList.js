@@ -18,7 +18,9 @@ const AnecdoteList = () => {
     dispatch(setNotification({content: anecdoteToBeUpdated.content},"upvote", 5));
   };
 
-  const regex = new RegExp(filter_text, "i", "g");
+  const regexFilter = /[^\-a-zA-Z0-9' ]+/gi;
+  let filteredInput = filter_text.replace(regexFilter, "");
+  const regex = new RegExp(filteredInput, "ig");
 
   const filteredAnecdotes = anecdotes.filter((sayingObjects) => {
     if (sayingObjects.content.search(regex) > -1) return sayingObjects;

@@ -23,3 +23,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(Notification);
+
+/// last buggy exercise
