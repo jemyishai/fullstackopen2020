@@ -1,10 +1,11 @@
 import React from 'react'
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
+import {connect} from 'react-redux';
 import { newInputAction } from '../reducers/filterReducer';
 
 
-const Filter = () => {
-  const dispatch = useDispatch()
+const Filter = ({dispatch}) => {
+  // const dispatch = useDispatch()
 
   const handleChange = (event) => {
     event.preventDefault()
@@ -22,4 +23,5 @@ const Filter = () => {
   )
 }
 
-export default Filter
+// export default Filter
+export default connect()(Filter)

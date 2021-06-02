@@ -1,18 +1,20 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
+import {connect} from 'react-redux';
 import { addAnecdote } from "../reducers/anecdoteReducer";
 import { setNotification} from "../reducers/notificationReducer";
 
-const AnecdoteForm = () => {
-  // const anecdotes = useSelector((state) => state);
-  const dispatch = useDispatch();
+const AnecdoteForm = (props) => {
+  // const dispatch = useDispatch();
 
   const dispatchAnecdote = (event) => {
     event.preventDefault();
     const saying = event.target.say.value;
     event.target.say.value = "";
-    dispatch(addAnecdote(saying));
-    dispatch(setNotification({content:saying},'newSaying', 5));
+    // dispatch(addAnecdote(saying));
+    // dispatch(setNotification({content:saying},'newSaying', 5));
+    props.addAnecdote(saying);
+    props.setNotification({content:saying},'newSaying', 5)
   };
 
   return (
@@ -26,4 +28,12 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = {
+  addAnecdote,
+  setNotification
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AnecdoteForm)
