@@ -1,16 +1,12 @@
 import React, { useState } from "react";
+import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
+
 import Menu from "./Menu";
 import Footer from "./Footer";
 import About from "./About";
 import AnecdoteList from "./AnecdoteList";
 import CreateNew from "./CreateNew";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import Anecdote from "./Anecdote";
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -54,24 +50,32 @@ const App = () => {
     paddingRight: 5,
   };
 
+  const match = useRouteMatch("/anecdote/:id");
+  const matchedAnecdote = match
+    ? anecdotes.find((anecdote) => anecdote.id === match.params.id)
+    : null;
+
   return (
     <div>
-    <h1>Software anecdotes</h1>
-    <Router>
-      <Menu/>
+      <h1>Software anecdotes</h1>
+
+      <Menu />
       <Switch>
-        <Route path="/create">
+        <Route exact path="/create">
           <CreateNew addNew={addNew} />
         </Route>
-        <Route path="/about">
+        <Route exact path="/about">
           <About />
+        </Route>
+        <Route path="/anecdote/:id">
+          <Anecdote anecdote={matchedAnecdote} />
         </Route>
         <Route path="/">
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>
-    </Router>
-    <Footer />
+
+      <Footer />
     </div>
   );
 };
