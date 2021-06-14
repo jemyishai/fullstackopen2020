@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useField } from "../hooks";
 
 const CreateNew = ({ addNew, setNotification }) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField("content");
+  const author = useField("author");
+  const info = useField("info");
   const history = useHistory();
 
   const resetForm = () => {
-    setContent("");
-    setAuthor("");
-    setInfo("");
+    content.reset();
+    author.reset();
+    info.reset();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     addNew({
-      content,
-      author,
-      info,
+      content: content.inputField.value,
+      author: author.inputField.value,
+      info: info.inputField.value,
       votes: 0,
     });
-    setNotification(`a new anecdote ${content}`);
+    setNotification(`a new anecdote ${content.inputField.value}`);
     resetForm();
     history.push("/");
   };
@@ -32,29 +33,20 @@ const CreateNew = ({ addNew, setNotification }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content.inputField} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author.inputField} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info.inputField} />
         </div>
         <button>create</button>
+        <button type="button" onClick={resetForm}>
+          reset
+        </button>
       </form>
     </div>
   );
