@@ -9,7 +9,7 @@ const Menu = () => {
     paddingRight: 5,
   };
   return (
-      <Router>
+      <div>
         <Link to="/" style={padding}>
           anecdotes
         </Link>
@@ -19,7 +19,7 @@ const Menu = () => {
         <Link to="about" style={padding}>
           about
         </Link>
-      </Router>
+      </div>
   );
 };
 

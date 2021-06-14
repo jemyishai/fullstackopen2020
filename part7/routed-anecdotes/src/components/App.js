@@ -57,19 +57,8 @@ const App = () => {
   return (
     <div>
     <h1>Software anecdotes</h1>
-
     <Router>
-
-        <Link to="/" style={padding}>
-          anecdotes
-        </Link>
-        <Link to="create" style={padding}>
-          create new
-        </Link>
-        <Link to="about" style={padding}>
-          about
-        </Link>
-
+      <Menu/>
       <Switch>
         <Route path="/create">
           <CreateNew addNew={addNew} />
@@ -81,7 +70,6 @@ const App = () => {
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>
-
     </Router>
     <Footer />
     </div>
