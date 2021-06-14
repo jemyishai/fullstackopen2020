@@ -7,6 +7,7 @@ import About from "./About";
 import AnecdoteList from "./AnecdoteList";
 import CreateNew from "./CreateNew";
 import Anecdote from "./Anecdote";
+import Notification from "./Notification";
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -60,9 +61,15 @@ const App = () => {
       <h1>Software anecdotes</h1>
 
       <Menu />
+      {notification ? (
+        <Notification
+          notification={notification}
+          setNotification={setNotification}
+        />
+      ) : null}
       <Switch>
         <Route exact path="/create">
-          <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} setNotification={setNotification} />
         </Route>
         <Route exact path="/about">
           <About />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -7,7 +7,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <ul>
       {anecdotes.map((anecdote) => (
         <li key={anecdote.id}>
-        <Link to={`/anecdote/${anecdote.id}`} >{anecdote.content} </Link>
+          <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content} </Link>
         </li>
       ))}
     </ul>
