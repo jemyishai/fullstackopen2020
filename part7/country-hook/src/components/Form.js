@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {MemoizedCountry} from "./Country";
+import { MemoizedCountry } from "./Country";
 
 import { useField, useCountry } from "../hooks";
 

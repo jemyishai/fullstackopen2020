@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import { render } from "react-dom";
+import { useState, useEffect } from "react";
 
 export const useField = (type) => {
   const [value, setValue] = useState("");
@@ -30,7 +29,6 @@ export const useCountry = (name) => {
     await axios
       .get(`https://restcountries.eu/rest/v2/name/${name}?fullText=true`)
       .then((response) => {
-        // console.log(response.data);
         setCountryObject(response.data);
       })
       .catch((err) => console.log(err));
